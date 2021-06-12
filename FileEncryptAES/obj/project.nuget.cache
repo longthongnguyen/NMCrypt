@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Xf0u0F/Ao3XcuKzXp6vyQ+PtQxG/4XTF8DQmbM5wuxQOncjSe655WLMcF1OeHRaKB4hGTmQ0zDpsuAOtRYi4bQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\THONG\\Documents\\HOCTAP\\VisualStudio2019\\FileEncryptAES\\FileEncryptAES\\FileEncryptAES.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\THONG\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512"
+  ],
+  "logs": []
+}
