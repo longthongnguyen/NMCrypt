@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -43,26 +44,23 @@ namespace FileEncryptAES
         }
         string workerOptions = "";
         string pathToSave = "";
+        string _PRIVATEKEY = "";
+        string _PUBLICKEY = "";
 
         public void AESAlgorithm(String inputFile, String OutputFile, String password, bool isEncrypt)
         {
+            byte[] DGSignFromFile = new byte[384];
+            bool isGotDGSign = false;
+            FileStream fsInput = new(inputFile, FileMode.Open, FileAccess.ReadWrite);
+            FileStream fsCipherText = new(OutputFile, FileMode.Create, FileAccess.ReadWrite);
             try
             {
-                if (!isEncrypt)
-                {
-                    OutputFile = Path.Combine(Path.GetDirectoryName(OutputFile), Path.GetFileNameWithoutExtension(OutputFile) + "_1" + Path.GetExtension(OutputFile));
-                }
-
-                FileStream fsInput = new(inputFile, FileMode.Open, FileAccess.ReadWrite);
-                FileStream fsCipherText = new(OutputFile, FileMode.Create, FileAccess.ReadWrite);
-
                 fsCipherText.SetLength(0);
-                int numberBytesRead = 10485760;//10MB
+                int numberBytesRead = 1048576;//1MB
                 byte[] bin = new byte[numberBytesRead];
                 long rdlen = 0;
                 long totlen = fsInput.Length;
                 int len;
-                byte[] DGSignFromFile = new byte[384];
                 //progressBar1.Minimum = 0;
                 //progressBar1.Maximum = 100;
 
@@ -74,10 +72,11 @@ namespace FileEncryptAES
                 }
                 else
                 {
-                    fsInput.Seek(-384, SeekOrigin.End);
-                    fsInput.Read(DGSignFromFile, 0, DGSignFromFile.Length);
-                    fsInput.SetLength(totlen - DGSignFromFile.Length);
-                    totlen = fsInput.Length;
+                    //fsInput.Seek(-384, SeekOrigin.End);
+                    //fsInput.Read(DGSignFromFile, 0, DGSignFromFile.Length);
+                    //fsInput.SetLength(totlen - DGSignFromFile.Length);
+                    //isGotDGSign = true;
+                    //totlen = fsInput.Length;
                     fsInput.Position = 0;
                     fsInput.Read(salt, 0, salt.Length);
                     rdlen = 32;
@@ -89,6 +88,7 @@ namespace FileEncryptAES
                 AES.BlockSize = 128;
                 AES.Padding = PaddingMode.PKCS7;
                 AES.Mode = CipherMode.CFB;
+                AES.FeedbackSize = 128;
                 int iterations = 50000;
                 var key = new Rfc2898DeriveBytes(passwordBytes, salt, iterations);
                 AES.Key = key.GetBytes(AES.KeySize / 8);
@@ -108,9 +108,15 @@ namespace FileEncryptAES
                 //Read from the input file, then encrypt and write to the output file.
                 while (rdlen < totlen)
                 {
-                    len = fsInput.Read(bin, 0, numberBytesRead); // Lần lượt đọc 10MB / 1 lần trong file input
-                    cryptStream.Write(bin, 0, len);
+                    long position = fsInput.Position;
+                    len = fsInput.Read(bin, 0, numberBytesRead); // Lần lượt đọc 1MB / 1 lần trong file input
                     rdlen = rdlen + len;
+                    if(rdlen >= totlen && !isEncrypt)
+                    {
+                        fsInput.Position = position;
+                        len = fsInput.Read(bin, 0, len - 384);
+                    }
+                    cryptStream.Write(bin, 0, len);
 
                     //label1.Text = "Tên tệp xử lý : " + Path.GetFileName(inputFile) + "\t Thành công: " + ((long)(rdlen * 100) / totlen).ToString() + " %";
                     //label1.Refresh();
@@ -120,23 +126,25 @@ namespace FileEncryptAES
                 }
                 cryptStream.FlushFinalBlock();
 
-                if(isEncrypt)
+                if (isEncrypt)
                 {
                     //Hash File:
-                    lblStatus.Text = "Hashing file...";
+                    lblStatus.Text = "Get Hash value...";
                     fsCipherText.Position = 0;
                     string SHAoutput = HashFile(fsCipherText);
 
                     //Sign to file
-                    lblStatus.Text = "Signging file...";
-                    string DGSignBase64 = RsaEncryptWithPrivate(SHAoutput, pathToSave);
+                    lblStatus.Text = "Signging to file...";
+                    string DGSignBase64 = RsaEncryptWithPrivate(SHAoutput, _PRIVATEKEY);
                     byte[] DGSignByte = Convert.FromBase64String(DGSignBase64);
                     fsCipherText.Write(DGSignByte, 0, DGSignByte.Length);
                     //txtDGsignature.Text = RsaEncryptWithPrivate(txtSHAoutput.Text, "privateKey.pem");
                 }
                 else
                 {
-                    fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
+                    //fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
+                    //isGotDGSign = false;
+                    //fsCipherText.SetLength( fsCipherText.Length - 384 );
                 }
 
 
@@ -147,13 +155,32 @@ namespace FileEncryptAES
                 ////    prc.Start();
                 ////}
 
-                fsInput.Close();
-                cryptStream.Close();
-                fsCipherText.Close();
+                try
+                {
+                    cryptStream.Close();
+                    fsInput.Close();
+                    isGotDGSign = false;
+                    fsCipherText.Close();
+                }
+                catch
+                {
+                    if( isGotDGSign && !isEncrypt )
+                    {
+                        fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
+                        isGotDGSign = false;
+                    }
+                    fsInput.Close();
+                    fsCipherText.Close();
+                }
             }
             catch
             {
-                
+                if (isGotDGSign && !isEncrypt )
+                {
+                    fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
+                }
+                fsInput.Close();
+                fsCipherText.Close();
             }
 
         }
@@ -205,6 +232,50 @@ namespace FileEncryptAES
             return decrypted;
         }
 
+        public void CompressFolder(string path)
+        {
+            if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
+            {
+                lblStatus.Text = "Compressing...";
+                pathToSave = path + ".NMTemp";
+                int count = 1;
+                while (File.Exists(pathToSave))
+                {
+                    count++;
+                    pathToSave = path + " (" + count + ")" + ".NMTemp";
+                }
+                ZipFile.CreateFromDirectory(path, pathToSave);
+            }
+        }
+
+        public void ExtractFolder(string path)
+        {
+            string fileType = Path.GetExtension(path);
+            if (fileType == ".NMTemp")
+            {
+                pathToSave = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path);
+                string tempPath = pathToSave;
+                int count = 1;
+                while (Directory.Exists(pathToSave))
+                {
+                    count++;
+                    pathToSave = tempPath + " (" + count + ")";
+                }
+                Directory.CreateDirectory(pathToSave);
+                ZipFile.ExtractToDirectory(path, pathToSave);
+            }
+        }
+
+        public void DeleteFolder(string path)
+        {
+            Directory.Delete(path);
+        }
+
+        public void DeleteFile(string path)
+        {
+            File.Delete(path);
+        }
+
         private void chbxDisplaypassword_CheckedChanged(object sender, EventArgs e)
         {
             if (chbxDisplaypassword.Checked)
@@ -251,7 +322,7 @@ namespace FileEncryptAES
                 {
                     if (!backgroundWorker1.IsBusy)
                     {
-                        pathToSave = op.FileName;
+                        _PRIVATEKEY = op.FileName;
                         backgroundWorker1.RunWorkerAsync();
                     }
                     else
@@ -267,12 +338,44 @@ namespace FileEncryptAES
             try
             {
                 string inputFileName = txtInput.Text;
+                string outputFileName = inputFileName;
                 string password = txtPassword.Text;
-                string outputFileName = inputFileName + ".NMEncrypt";
 
-                lblStatus.Text = "File is being encrypt.";
+                string fileOrfolder = "";
+                if (File.GetAttributes(inputFileName).HasFlag(FileAttributes.Directory))
+                {
+                    fileOrfolder = "Folder";
+                    outputFileName = inputFileName + ".NMCryptF";
+                    int count = 1;
+                    while(File.Exists(outputFileName))
+                    {
+                        count++;
+                        outputFileName = inputFileName + " (" + count + ")" + ".NMCryptF";
+                    }
+                    CompressFolder(inputFileName);
+                    inputFileName = pathToSave;
+                }
+                else
+                {
+                    fileOrfolder = "File";
+                    outputFileName = inputFileName + ".NMCrypt";
+                    int count = 1;
+                    while (File.Exists(outputFileName))
+                    {
+                        count++;
+                        outputFileName = Path.Combine(Path.GetDirectoryName(inputFileName), Path.GetFileNameWithoutExtension(inputFileName) + " (" + count + ")" + Path.GetExtension(inputFileName) + ".NMCrypt");
+                    }
+                }
+
+                lblStatus.Text = fileOrfolder + " is being encrypt...";
                 AESAlgorithm(inputFileName, outputFileName, password, true);
-                MessageBox.Show("Your file has been encrypted at " + outputFileName, "File enccrypt successful");
+
+                lblStatus.Text = "Completed!";
+                if(fileOrfolder == "Folder")
+                {
+                    DeleteFile(inputFileName);
+                }
+                MessageBox.Show("File save at\n" + outputFileName, "Completed!");
             }
             catch { }
         }
@@ -296,21 +399,68 @@ namespace FileEncryptAES
 
         private void Decrypt(DoWorkEventArgs e)
         {
+            string inputFileName = txtInput.Text;
+            string password = txtPassword.Text;
+            string outputFileName = inputFileName;
+            string tempFileName = "";
             try
             {
-                string inputFileName = txtInput.Text;
-                string password = txtPassword.Text;
 
-                int length = inputFileName.Length - 10;
-                string outputFileName = inputFileName.Substring(0, length);
+                string fileOrfolder = "";
+                if (Path.GetExtension(inputFileName) == ".NMCryptF")
+                {
+                    fileOrfolder = "Folder";
+                    tempFileName = Path.Combine(Path.GetDirectoryName(inputFileName), Path.GetFileNameWithoutExtension(inputFileName));
+                    outputFileName = tempFileName + ".NMTemp";
+                    int count = 1;
+                    while (File.Exists(outputFileName))
+                    {
+                        count++;
+                        outputFileName = tempFileName + " (" + count + ")" + ".NMTemp";
+                    }
+                }
+                else
+                {
+                    if(Path.GetExtension(inputFileName) == ".NMCrypt")
+                    {
+                        fileOrfolder = "File";
+                        tempFileName = Path.Combine(Path.GetDirectoryName(inputFileName) + "\\" + Path.GetFileNameWithoutExtension(inputFileName));
+                        outputFileName = tempFileName;
+                        int count = 1;
+                        while (File.Exists(outputFileName))
+                        {
+                            count++;
+                            outputFileName = Path.Combine(Path.GetDirectoryName(tempFileName), Path.GetFileNameWithoutExtension(tempFileName) + " (" + count + ")" + Path.GetExtension(tempFileName));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Sorry, this file type is not supported here!", "Error!");
+                        return;
+                    }
+                }
 
-                lblStatus.Text = "File is being decrypt.";
+                lblStatus.Text = fileOrfolder + " is being decrypt...";
                 AESAlgorithm(inputFileName, outputFileName, password, false);
 
-                lblStatus.Text = "File decrypt successful";
-                MessageBox.Show("Your file has been decrypt at " + outputFileName, "File decrypt successful");
+                if(fileOrfolder == "Folder")
+                {
+                    lblStatus.Text = "Extracting...";
+
+                    ExtractFolder(outputFileName);
+                    DeleteFile(outputFileName);
+                    outputFileName = pathToSave;
+                }
+
+                lblStatus.Text = fileOrfolder + " decrypt successful";
+                MessageBox.Show(fileOrfolder + " save at " + outputFileName, "Completed!");
             }
-            catch { }
+            catch
+            {
+                DeleteFile(outputFileName);
+                DeleteFolder(pathToSave);
+                MessageBox.Show("Cannot decrypt, Password incorrect!", "Error!");
+            }
         }
         private void keygenerateToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -364,7 +514,7 @@ namespace FileEncryptAES
             string print_privatekey = textWriter2.ToString();
             File.WriteAllText(pathToSave + @"\privateKey.pem", print_privatekey);
 
-            lblStatus.Text = "Public key and Private key has been generated";
+            lblStatus.Text = "Public key and Private key generate completed";
             MessageBox.Show("Filename: publicKey.pem & privateKey.pem\nAt " + pathToSave, "Generate and save key successful",
                 MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button3);
             pathToSave = "";
@@ -430,17 +580,19 @@ namespace FileEncryptAES
         private void VerifyFileIntegrity(DoWorkEventArgs e)
         {
             string inputFileName = txtInput.Text;
+            byte[] DGSignFromFile = new byte[384];
+            bool isGotDGSign = false;
             FileStream fsInput = new(inputFileName, FileMode.Open, FileAccess.ReadWrite);
             try
             {
                 lblStatus.Text = "Verifying file integrity";
-                byte[] DGSignFromFile = new byte[384];
                 fsInput.Seek(-384, SeekOrigin.End);
                 fsInput.Read(DGSignFromFile, 0, DGSignFromFile.Length);
                 string SHAGetFromFile = RsaDecryptWithPublic(Convert.ToBase64String(DGSignFromFile), pathToSave);
 
-                fsInput.Position = 0;
                 fsInput.SetLength(fsInput.Length - DGSignFromFile.Length);
+                isGotDGSign = true;
+                fsInput.Position = 0;
                 string SHAComputeFromFile = HashFile(fsInput);
                 fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
                 if (SHAGetFromFile == SHAComputeFromFile)
@@ -450,12 +602,16 @@ namespace FileEncryptAES
                 }
                 else
                 {
-                    MessageBox.Show("This file has been change (Not have integrity)!", "File decrypt successful");
+                    MessageBox.Show("This file has been change (Not have integrity)!", "Warning");
                 }
                 fsInput.Close();
             }
             catch
             {
+                if (isGotDGSign)
+                {
+                    fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
+                }
                 fsInput.Close();
                 MessageBox.Show("This file has been change (Not have integrity)!", "Warning!");
             }

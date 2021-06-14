@@ -30,7 +30,6 @@ namespace FileEncryptAES
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NMEncrypt));
-            this.txtInput = new System.Windows.Forms.TextBox();
             this.btnBrowserfile = new System.Windows.Forms.Button();
             this.btnEncrypt = new System.Windows.Forms.Button();
             this.btnDecrypt = new System.Windows.Forms.Button();
@@ -74,21 +73,16 @@ namespace FileEncryptAES
             this.lblStatus = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.txtInput = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtInput
-            // 
-            this.txtInput.Location = new System.Drawing.Point(94, 127);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(456, 23);
-            this.txtInput.TabIndex = 0;
-            // 
             // btnBrowserfile
             // 
-            this.btnBrowserfile.Location = new System.Drawing.Point(565, 118);
+            this.btnBrowserfile.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfile.Location = new System.Drawing.Point(599, 132);
             this.btnBrowserfile.Name = "btnBrowserfile";
-            this.btnBrowserfile.Size = new System.Drawing.Size(93, 39);
+            this.btnBrowserfile.Size = new System.Drawing.Size(135, 39);
             this.btnBrowserfile.TabIndex = 1;
             this.btnBrowserfile.Text = "Browser File";
             this.btnBrowserfile.UseVisualStyleBackColor = true;
@@ -96,7 +90,8 @@ namespace FileEncryptAES
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(153, 187);
+            this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnEncrypt.Location = new System.Drawing.Point(195, 204);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(93, 56);
             this.btnEncrypt.TabIndex = 2;
@@ -106,7 +101,8 @@ namespace FileEncryptAES
             // 
             // btnDecrypt
             // 
-            this.btnDecrypt.Location = new System.Drawing.Point(555, 187);
+            this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDecrypt.Location = new System.Drawing.Point(597, 204);
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(93, 56);
             this.btnDecrypt.TabIndex = 3;
@@ -117,36 +113,40 @@ namespace FileEncryptAES
             // lblInupt
             // 
             this.lblInupt.AutoSize = true;
-            this.lblInupt.Location = new System.Drawing.Point(20, 130);
+            this.lblInupt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInupt.Location = new System.Drawing.Point(20, 144);
             this.lblInupt.Name = "lblInupt";
-            this.lblInupt.Size = new System.Drawing.Size(35, 15);
+            this.lblInupt.Size = new System.Drawing.Size(74, 21);
             this.lblInupt.TabIndex = 4;
-            this.lblInupt.Text = "Input";
+            this.lblInupt.Text = "Input File";
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
+            this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblPassword.Location = new System.Drawing.Point(20, 69);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(57, 15);
+            this.lblPassword.Size = new System.Drawing.Size(76, 21);
             this.lblPassword.TabIndex = 5;
             this.lblPassword.Text = "Password";
             // 
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtPassword.Location = new System.Drawing.Point(94, 66);
+            this.txtPassword.Location = new System.Drawing.Point(100, 66);
+            this.txtPassword.MaxLength = 32;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
-            this.txtPassword.Size = new System.Drawing.Size(456, 29);
+            this.txtPassword.Size = new System.Drawing.Size(262, 29);
             this.txtPassword.TabIndex = 6;
             // 
             // chbxDisplaypassword
             // 
             this.chbxDisplaypassword.AutoSize = true;
-            this.chbxDisplaypassword.Location = new System.Drawing.Point(94, 97);
+            this.chbxDisplaypassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.chbxDisplaypassword.Location = new System.Drawing.Point(100, 97);
             this.chbxDisplaypassword.Name = "chbxDisplaypassword";
-            this.chbxDisplaypassword.Size = new System.Drawing.Size(117, 19);
+            this.chbxDisplaypassword.Size = new System.Drawing.Size(134, 23);
             this.chbxDisplaypassword.TabIndex = 7;
             this.chbxDisplaypassword.Text = "Display Password";
             this.chbxDisplaypassword.UseVisualStyleBackColor = true;
@@ -154,9 +154,10 @@ namespace FileEncryptAES
             // 
             // btnBrowserfolder
             // 
-            this.btnBrowserfolder.Location = new System.Drawing.Point(685, 118);
+            this.btnBrowserfolder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfolder.Location = new System.Drawing.Point(740, 132);
             this.btnBrowserfolder.Name = "btnBrowserfolder";
-            this.btnBrowserfolder.Size = new System.Drawing.Size(93, 39);
+            this.btnBrowserfolder.Size = new System.Drawing.Size(135, 39);
             this.btnBrowserfolder.TabIndex = 8;
             this.btnBrowserfolder.Text = "Browser Folder";
             this.btnBrowserfolder.UseVisualStyleBackColor = true;
@@ -404,15 +405,16 @@ namespace FileEncryptAES
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(800, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(889, 29);
             this.menuStrip1.TabIndex = 17;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // btnVerifyfile
             // 
-            this.btnVerifyfile.Location = new System.Drawing.Point(321, 198);
+            this.btnVerifyfile.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnVerifyfile.Location = new System.Drawing.Point(353, 215);
             this.btnVerifyfile.Name = "btnVerifyfile";
-            this.btnVerifyfile.Size = new System.Drawing.Size(147, 34);
+            this.btnVerifyfile.Size = new System.Drawing.Size(170, 34);
             this.btnVerifyfile.TabIndex = 20;
             this.btnVerifyfile.Text = "Verify File Integrity";
             this.btnVerifyfile.UseVisualStyleBackColor = true;
@@ -422,7 +424,7 @@ namespace FileEncryptAES
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(72, 256);
+            this.lblStatus.Location = new System.Drawing.Point(114, 273);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(79, 21);
             this.lblStatus.TabIndex = 21;
@@ -437,16 +439,25 @@ namespace FileEncryptAES
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(80, 286);
+            this.progressBar1.Location = new System.Drawing.Point(122, 303);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(634, 33);
             this.progressBar1.TabIndex = 22;
+            // 
+            // txtInput
+            // 
+            this.txtInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtInput.Location = new System.Drawing.Point(100, 138);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(479, 29);
+            this.txtInput.TabIndex = 24;
             // 
             // NMEncrypt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 361);
+            this.ClientSize = new System.Drawing.Size(889, 361);
+            this.Controls.Add(this.txtInput);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnVerifyfile);
@@ -458,13 +469,12 @@ namespace FileEncryptAES
             this.Controls.Add(this.btnDecrypt);
             this.Controls.Add(this.btnEncrypt);
             this.Controls.Add(this.btnBrowserfile);
-            this.Controls.Add(this.txtInput);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "NMEncrypt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "NMEncrypt";
+            this.Text = "NMCrypt";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -473,8 +483,6 @@ namespace FileEncryptAES
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.Button btnBrowserfile;
         private System.Windows.Forms.Button btnEncrypt;
         private System.Windows.Forms.Button btnDecrypt;
@@ -518,6 +526,7 @@ namespace FileEncryptAES
         private System.Windows.Forms.Label lblStatus;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.TextBox txtInput;
     }
 }
 
