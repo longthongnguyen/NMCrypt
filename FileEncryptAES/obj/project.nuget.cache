@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Xf0u0F/Ao3XcuKzXp6vyQ+PtQxG/4XTF8DQmbM5wuxQOncjSe655WLMcF1OeHRaKB4hGTmQ0zDpsuAOtRYi4bQ==",
+  "dgSpecHash": "q9evabNWt5UNwgOnS74UWC7SUmOd6xm0c0VGk+5zxUW+iO1xY4jUGprGOsFBPzxxogjqxW1VHW4+Ca/7t5TSDQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\THONG\\Documents\\HOCTAP\\VisualStudio2019\\FileEncryptAES\\FileEncryptAES\\FileEncryptAES.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\THONG\\.nuget\\packages\\fontawesome.sharp\\5.15.3\\fontawesome.sharp.5.15.3.nupkg.sha512",
     "C:\\Users\\THONG\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512"
   ],
   "logs": []

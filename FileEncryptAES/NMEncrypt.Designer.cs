@@ -1,7 +1,7 @@
 ﻿
 namespace FileEncryptAES
 {
-    partial class NMEncrypt
+    partial class formNMCrypt
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,24 +29,15 @@ namespace FileEncryptAES
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NMEncrypt));
-            this.btnBrowserfile = new System.Windows.Forms.Button();
-            this.btnEncrypt = new System.Windows.Forms.Button();
-            this.btnDecrypt = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formNMCrypt));
             this.lblInupt = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.chbxDisplaypassword = new System.Windows.Forms.CheckBox();
-            this.btnBrowserfolder = new System.Windows.Forms.Button();
+            this.txtPasswordEncrypt = new System.Windows.Forms.TextBox();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importprkeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,99 +60,69 @@ namespace FileEncryptAES
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.btnVerifyfile = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.txtInput = new System.Windows.Forms.TextBox();
+            this.txtInputEncrypt = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabEncrypt = new System.Windows.Forms.TabPage();
+            this.btnBrowserfolder = new FontAwesome.Sharp.IconButton();
+            this.btnBrowserfileEncrypt = new FontAwesome.Sharp.IconButton();
+            this.btnHide = new FontAwesome.Sharp.IconButton();
+            this.btnShow = new FontAwesome.Sharp.IconButton();
+            this.btnEncrypt = new FontAwesome.Sharp.IconButton();
+            this.tabCheck = new System.Windows.Forms.TabPage();
+            this.btnImportKey = new FontAwesome.Sharp.IconButton();
+            this.iconButton2 = new FontAwesome.Sharp.IconButton();
+            this.btnCheck = new FontAwesome.Sharp.IconButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtInputCheck = new System.Windows.Forms.TextBox();
+            this.tabDecrypt = new System.Windows.Forms.TabPage();
+            this.btnBrowserfileDecrypt = new FontAwesome.Sharp.IconButton();
+            this.btnHideD = new FontAwesome.Sharp.IconButton();
+            this.btnShowD = new FontAwesome.Sharp.IconButton();
+            this.btnDecrypt = new FontAwesome.Sharp.IconButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtInputDecrypt = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtPasswordDecrypt = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabEncrypt.SuspendLayout();
+            this.tabCheck.SuspendLayout();
+            this.tabDecrypt.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnBrowserfile
-            // 
-            this.btnBrowserfile.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnBrowserfile.Location = new System.Drawing.Point(599, 132);
-            this.btnBrowserfile.Name = "btnBrowserfile";
-            this.btnBrowserfile.Size = new System.Drawing.Size(135, 39);
-            this.btnBrowserfile.TabIndex = 1;
-            this.btnBrowserfile.Text = "Browser File";
-            this.btnBrowserfile.UseVisualStyleBackColor = true;
-            this.btnBrowserfile.Click += new System.EventHandler(this.btnBrowserfile_Click);
-            // 
-            // btnEncrypt
-            // 
-            this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnEncrypt.Location = new System.Drawing.Point(195, 204);
-            this.btnEncrypt.Name = "btnEncrypt";
-            this.btnEncrypt.Size = new System.Drawing.Size(93, 56);
-            this.btnEncrypt.TabIndex = 2;
-            this.btnEncrypt.Text = "Encrypt";
-            this.btnEncrypt.UseVisualStyleBackColor = true;
-            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
-            // 
-            // btnDecrypt
-            // 
-            this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDecrypt.Location = new System.Drawing.Point(597, 204);
-            this.btnDecrypt.Name = "btnDecrypt";
-            this.btnDecrypt.Size = new System.Drawing.Size(93, 56);
-            this.btnDecrypt.TabIndex = 3;
-            this.btnDecrypt.Text = "Decrypt";
-            this.btnDecrypt.UseVisualStyleBackColor = true;
-            this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
             // 
             // lblInupt
             // 
             this.lblInupt.AutoSize = true;
             this.lblInupt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblInupt.Location = new System.Drawing.Point(20, 144);
+            this.lblInupt.Location = new System.Drawing.Point(61, 106);
             this.lblInupt.Name = "lblInupt";
-            this.lblInupt.Size = new System.Drawing.Size(74, 21);
+            this.lblInupt.Size = new System.Drawing.Size(80, 21);
             this.lblInupt.TabIndex = 4;
-            this.lblInupt.Text = "Input File";
+            this.lblInupt.Text = "Input Path";
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblPassword.Location = new System.Drawing.Point(20, 69);
+            this.lblPassword.Location = new System.Drawing.Point(61, 31);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(76, 21);
             this.lblPassword.TabIndex = 5;
             this.lblPassword.Text = "Password";
             // 
-            // txtPassword
+            // txtPasswordEncrypt
             // 
-            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtPassword.Location = new System.Drawing.Point(100, 66);
-            this.txtPassword.MaxLength = 32;
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '●';
-            this.txtPassword.Size = new System.Drawing.Size(262, 29);
-            this.txtPassword.TabIndex = 6;
-            // 
-            // chbxDisplaypassword
-            // 
-            this.chbxDisplaypassword.AutoSize = true;
-            this.chbxDisplaypassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chbxDisplaypassword.Location = new System.Drawing.Point(100, 97);
-            this.chbxDisplaypassword.Name = "chbxDisplaypassword";
-            this.chbxDisplaypassword.Size = new System.Drawing.Size(134, 23);
-            this.chbxDisplaypassword.TabIndex = 7;
-            this.chbxDisplaypassword.Text = "Display Password";
-            this.chbxDisplaypassword.UseVisualStyleBackColor = true;
-            this.chbxDisplaypassword.CheckedChanged += new System.EventHandler(this.chbxDisplaypassword_CheckedChanged);
-            // 
-            // btnBrowserfolder
-            // 
-            this.btnBrowserfolder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnBrowserfolder.Location = new System.Drawing.Point(740, 132);
-            this.btnBrowserfolder.Name = "btnBrowserfolder";
-            this.btnBrowserfolder.Size = new System.Drawing.Size(135, 39);
-            this.btnBrowserfolder.TabIndex = 8;
-            this.btnBrowserfolder.Text = "Browser Folder";
-            this.btnBrowserfolder.UseVisualStyleBackColor = true;
-            this.btnBrowserfolder.Click += new System.EventHandler(this.btnBrowserfolder_Click);
+            this.txtPasswordEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtPasswordEncrypt.Location = new System.Drawing.Point(141, 28);
+            this.txtPasswordEncrypt.MaxLength = 32;
+            this.txtPasswordEncrypt.Name = "txtPasswordEncrypt";
+            this.txtPasswordEncrypt.PasswordChar = '●';
+            this.txtPasswordEncrypt.Size = new System.Drawing.Size(479, 29);
+            this.txtPasswordEncrypt.TabIndex = 6;
             // 
             // fileToolStripMenuItem
             // 
@@ -169,11 +130,7 @@ namespace FileEncryptAES
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.toolStripSeparator,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.printToolStripMenuItem,
-            this.printPreviewToolStripMenuItem,
+            this.importprkeyToolStripMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -186,7 +143,7 @@ namespace FileEncryptAES
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.newToolStripMenuItem.Text = "&New";
             // 
             // openToolStripMenuItem
@@ -195,60 +152,32 @@ namespace FileEncryptAES
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.openToolStripMenuItem.Text = "&Open";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(303, 6);
             // 
-            // saveToolStripMenuItem
+            // importprkeyToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
-            this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
-            this.saveToolStripMenuItem.Text = "&Save";
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
-            this.saveAsToolStripMenuItem.Text = "Save &As";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
-            // 
-            // printToolStripMenuItem
-            // 
-            this.printToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripMenuItem.Image")));
-            this.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
-            this.printToolStripMenuItem.Text = "&Print";
-            // 
-            // printPreviewToolStripMenuItem
-            // 
-            this.printPreviewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("printPreviewToolStripMenuItem.Image")));
-            this.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-            this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
-            this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
+            this.importprkeyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.importprkeyToolStripMenuItem.Name = "importprkeyToolStripMenuItem";
+            this.importprkeyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.importprkeyToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.importprkeyToolStripMenuItem.Text = "&Import Private Key (.pem)";
+            this.importprkeyToolStripMenuItem.Click += new System.EventHandler(this.importpukeyToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(303, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.exitToolStripMenuItem.Text = "E&xit";
             // 
             // editToolStripMenuItem
@@ -336,20 +265,20 @@ namespace FileEncryptAES
             // keygenerateToolStripMenuItem
             // 
             this.keygenerateToolStripMenuItem.Name = "keygenerateToolStripMenuItem";
-            this.keygenerateToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
-            this.keygenerateToolStripMenuItem.Text = "Generate RSA Key .PEM";
+            this.keygenerateToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.keygenerateToolStripMenuItem.Text = "Generate RSA Key (.pem)";
             this.keygenerateToolStripMenuItem.Click += new System.EventHandler(this.keygenerateToolStripMenuItem_Click);
             // 
             // customizeToolStripMenuItem
             // 
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // helpToolStripMenuItem
@@ -405,30 +334,20 @@ namespace FileEncryptAES
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(889, 29);
+            this.menuStrip1.Size = new System.Drawing.Size(997, 29);
             this.menuStrip1.TabIndex = 17;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // btnVerifyfile
-            // 
-            this.btnVerifyfile.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnVerifyfile.Location = new System.Drawing.Point(353, 215);
-            this.btnVerifyfile.Name = "btnVerifyfile";
-            this.btnVerifyfile.Size = new System.Drawing.Size(170, 34);
-            this.btnVerifyfile.TabIndex = 20;
-            this.btnVerifyfile.Text = "Verify File Integrity";
-            this.btnVerifyfile.UseVisualStyleBackColor = true;
-            this.btnVerifyfile.Click += new System.EventHandler(this.btnVerifyfile_Click);
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(114, 273);
+            this.lblStatus.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblStatus.Location = new System.Drawing.Point(177, 335);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(79, 21);
             this.lblStatus.TabIndex = 21;
-            this.lblStatus.Text = " Loading...";
+            this.lblStatus.Text = "Welcome!";
             // 
             // backgroundWorker1
             // 
@@ -439,67 +358,390 @@ namespace FileEncryptAES
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(122, 303);
+            this.progressBar1.Location = new System.Drawing.Point(177, 359);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(634, 33);
             this.progressBar1.TabIndex = 22;
             // 
-            // txtInput
+            // txtInputEncrypt
             // 
-            this.txtInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtInput.Location = new System.Drawing.Point(100, 138);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(479, 29);
-            this.txtInput.TabIndex = 24;
+            this.txtInputEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtInputEncrypt.Location = new System.Drawing.Point(141, 100);
+            this.txtInputEncrypt.Name = "txtInputEncrypt";
+            this.txtInputEncrypt.Size = new System.Drawing.Size(479, 29);
+            this.txtInputEncrypt.TabIndex = 24;
             // 
-            // NMEncrypt
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabEncrypt);
+            this.tabControl1.Controls.Add(this.tabCheck);
+            this.tabControl1.Controls.Add(this.tabDecrypt);
+            this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tabControl1.Location = new System.Drawing.Point(0, 43);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(997, 280);
+            this.tabControl1.TabIndex = 26;
+            // 
+            // tabEncrypt
+            // 
+            this.tabEncrypt.BackColor = System.Drawing.SystemColors.Control;
+            this.tabEncrypt.Controls.Add(this.btnBrowserfolder);
+            this.tabEncrypt.Controls.Add(this.btnBrowserfileEncrypt);
+            this.tabEncrypt.Controls.Add(this.btnHide);
+            this.tabEncrypt.Controls.Add(this.btnShow);
+            this.tabEncrypt.Controls.Add(this.btnEncrypt);
+            this.tabEncrypt.Controls.Add(this.lblInupt);
+            this.tabEncrypt.Controls.Add(this.txtInputEncrypt);
+            this.tabEncrypt.Controls.Add(this.lblPassword);
+            this.tabEncrypt.Controls.Add(this.txtPasswordEncrypt);
+            this.tabEncrypt.Location = new System.Drawing.Point(4, 26);
+            this.tabEncrypt.Name = "tabEncrypt";
+            this.tabEncrypt.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEncrypt.Size = new System.Drawing.Size(989, 250);
+            this.tabEncrypt.TabIndex = 0;
+            this.tabEncrypt.Text = "Encrypt file and folder";
+            // 
+            // btnBrowserfolder
+            // 
+            this.btnBrowserfolder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfolder.IconChar = FontAwesome.Sharp.IconChar.FolderOpen;
+            this.btnBrowserfolder.IconColor = System.Drawing.Color.Black;
+            this.btnBrowserfolder.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBrowserfolder.IconSize = 35;
+            this.btnBrowserfolder.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnBrowserfolder.Location = new System.Drawing.Point(781, 94);
+            this.btnBrowserfolder.Name = "btnBrowserfolder";
+            this.btnBrowserfolder.Size = new System.Drawing.Size(156, 39);
+            this.btnBrowserfolder.TabIndex = 36;
+            this.btnBrowserfolder.Text = "Browser Folder";
+            this.btnBrowserfolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnBrowserfolder.UseVisualStyleBackColor = true;
+            this.btnBrowserfolder.Click += new System.EventHandler(this.btnBrowserfolder_Click);
+            // 
+            // btnBrowserfileEncrypt
+            // 
+            this.btnBrowserfileEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfileEncrypt.IconChar = FontAwesome.Sharp.IconChar.File;
+            this.btnBrowserfileEncrypt.IconColor = System.Drawing.Color.Black;
+            this.btnBrowserfileEncrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBrowserfileEncrypt.IconSize = 35;
+            this.btnBrowserfileEncrypt.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnBrowserfileEncrypt.Location = new System.Drawing.Point(640, 94);
+            this.btnBrowserfileEncrypt.Name = "btnBrowserfileEncrypt";
+            this.btnBrowserfileEncrypt.Size = new System.Drawing.Size(135, 39);
+            this.btnBrowserfileEncrypt.TabIndex = 35;
+            this.btnBrowserfileEncrypt.Text = "Browser File";
+            this.btnBrowserfileEncrypt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnBrowserfileEncrypt.UseVisualStyleBackColor = true;
+            this.btnBrowserfileEncrypt.Click += new System.EventHandler(this.btnBrowserfile_Click);
+            // 
+            // btnHide
+            // 
+            this.btnHide.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnHide.IconChar = FontAwesome.Sharp.IconChar.EyeSlash;
+            this.btnHide.IconColor = System.Drawing.Color.Black;
+            this.btnHide.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnHide.IconSize = 30;
+            this.btnHide.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnHide.Location = new System.Drawing.Point(620, 28);
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(77, 29);
+            this.btnHide.TabIndex = 27;
+            this.btnHide.Text = "Hide";
+            this.btnHide.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnHide.UseVisualStyleBackColor = true;
+            this.btnHide.Click += new System.EventHandler(this.chbxDisplaypassword_CheckedChanged);
+            // 
+            // btnShow
+            // 
+            this.btnShow.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnShow.IconChar = FontAwesome.Sharp.IconChar.Eye;
+            this.btnShow.IconColor = System.Drawing.Color.Black;
+            this.btnShow.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnShow.IconSize = 30;
+            this.btnShow.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnShow.Location = new System.Drawing.Point(620, 28);
+            this.btnShow.Name = "btnShow";
+            this.btnShow.Size = new System.Drawing.Size(77, 29);
+            this.btnShow.TabIndex = 26;
+            this.btnShow.Text = "Show";
+            this.btnShow.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnShow.UseVisualStyleBackColor = true;
+            this.btnShow.Click += new System.EventHandler(this.chbxDisplaypassword_CheckedChanged);
+            // 
+            // btnEncrypt
+            // 
+            this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnEncrypt.IconChar = FontAwesome.Sharp.IconChar.Lock;
+            this.btnEncrypt.IconColor = System.Drawing.Color.DarkGreen;
+            this.btnEncrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnEncrypt.IconSize = 60;
+            this.btnEncrypt.Location = new System.Drawing.Point(10, 148);
+            this.btnEncrypt.Name = "btnEncrypt";
+            this.btnEncrypt.Size = new System.Drawing.Size(971, 90);
+            this.btnEncrypt.TabIndex = 25;
+            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnEncrypt.UseVisualStyleBackColor = true;
+            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
+            // 
+            // tabCheck
+            // 
+            this.tabCheck.BackColor = System.Drawing.SystemColors.Control;
+            this.tabCheck.Controls.Add(this.btnImportKey);
+            this.tabCheck.Controls.Add(this.iconButton2);
+            this.tabCheck.Controls.Add(this.btnCheck);
+            this.tabCheck.Controls.Add(this.label3);
+            this.tabCheck.Controls.Add(this.txtInputCheck);
+            this.tabCheck.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tabCheck.Location = new System.Drawing.Point(4, 26);
+            this.tabCheck.Name = "tabCheck";
+            this.tabCheck.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCheck.Size = new System.Drawing.Size(989, 250);
+            this.tabCheck.TabIndex = 1;
+            this.tabCheck.Text = "Integrity check";
+            // 
+            // btnImportKey
+            // 
+            this.btnImportKey.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnImportKey.IconChar = FontAwesome.Sharp.IconChar.Key;
+            this.btnImportKey.IconColor = System.Drawing.Color.Black;
+            this.btnImportKey.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnImportKey.IconSize = 40;
+            this.btnImportKey.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnImportKey.Location = new System.Drawing.Point(141, 28);
+            this.btnImportKey.Name = "btnImportKey";
+            this.btnImportKey.Size = new System.Drawing.Size(479, 57);
+            this.btnImportKey.TabIndex = 36;
+            this.btnImportKey.Text = "Import Public Key";
+            this.btnImportKey.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnImportKey.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnImportKey.UseVisualStyleBackColor = true;
+            this.btnImportKey.Click += new System.EventHandler(this.btnImportKey_Click);
+            // 
+            // iconButton2
+            // 
+            this.iconButton2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.File;
+            this.iconButton2.IconColor = System.Drawing.Color.Black;
+            this.iconButton2.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconButton2.IconSize = 35;
+            this.iconButton2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.iconButton2.Location = new System.Drawing.Point(640, 94);
+            this.iconButton2.Name = "iconButton2";
+            this.iconButton2.Size = new System.Drawing.Size(135, 39);
+            this.iconButton2.TabIndex = 35;
+            this.iconButton2.Text = "Browser File";
+            this.iconButton2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.iconButton2.UseVisualStyleBackColor = true;
+            this.iconButton2.Click += new System.EventHandler(this.btnBrowserfileCheck_Click);
+            // 
+            // btnCheck
+            // 
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnCheck.IconChar = FontAwesome.Sharp.IconChar.Check;
+            this.btnCheck.IconColor = System.Drawing.Color.DarkGreen;
+            this.btnCheck.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnCheck.IconSize = 60;
+            this.btnCheck.Location = new System.Drawing.Point(10, 148);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(971, 90);
+            this.btnCheck.TabIndex = 29;
+            this.btnCheck.Text = "Check";
+            this.btnCheck.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCheck.UseVisualStyleBackColor = true;
+            this.btnCheck.Click += new System.EventHandler(this.btnVerifyfile_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(61, 106);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(80, 21);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "Input Path";
+            // 
+            // txtInputCheck
+            // 
+            this.txtInputCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtInputCheck.Location = new System.Drawing.Point(141, 100);
+            this.txtInputCheck.Name = "txtInputCheck";
+            this.txtInputCheck.Size = new System.Drawing.Size(479, 29);
+            this.txtInputCheck.TabIndex = 27;
+            // 
+            // tabDecrypt
+            // 
+            this.tabDecrypt.BackColor = System.Drawing.SystemColors.Control;
+            this.tabDecrypt.Controls.Add(this.btnBrowserfileDecrypt);
+            this.tabDecrypt.Controls.Add(this.btnHideD);
+            this.tabDecrypt.Controls.Add(this.btnShowD);
+            this.tabDecrypt.Controls.Add(this.btnDecrypt);
+            this.tabDecrypt.Controls.Add(this.label1);
+            this.tabDecrypt.Controls.Add(this.txtInputDecrypt);
+            this.tabDecrypt.Controls.Add(this.label2);
+            this.tabDecrypt.Controls.Add(this.txtPasswordDecrypt);
+            this.tabDecrypt.Location = new System.Drawing.Point(4, 26);
+            this.tabDecrypt.Name = "tabDecrypt";
+            this.tabDecrypt.Size = new System.Drawing.Size(989, 250);
+            this.tabDecrypt.TabIndex = 2;
+            this.tabDecrypt.Text = "Deccrypt file and folder";
+            // 
+            // btnBrowserfileDecrypt
+            // 
+            this.btnBrowserfileDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfileDecrypt.IconChar = FontAwesome.Sharp.IconChar.File;
+            this.btnBrowserfileDecrypt.IconColor = System.Drawing.Color.Black;
+            this.btnBrowserfileDecrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBrowserfileDecrypt.IconSize = 35;
+            this.btnBrowserfileDecrypt.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnBrowserfileDecrypt.Location = new System.Drawing.Point(640, 94);
+            this.btnBrowserfileDecrypt.Name = "btnBrowserfileDecrypt";
+            this.btnBrowserfileDecrypt.Size = new System.Drawing.Size(135, 39);
+            this.btnBrowserfileDecrypt.TabIndex = 34;
+            this.btnBrowserfileDecrypt.Text = "Browser File";
+            this.btnBrowserfileDecrypt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnBrowserfileDecrypt.UseVisualStyleBackColor = true;
+            this.btnBrowserfileDecrypt.Click += new System.EventHandler(this.btnBrowserfileDecrypt_Click);
+            // 
+            // btnHideD
+            // 
+            this.btnHideD.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnHideD.IconChar = FontAwesome.Sharp.IconChar.EyeSlash;
+            this.btnHideD.IconColor = System.Drawing.Color.Black;
+            this.btnHideD.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnHideD.IconSize = 30;
+            this.btnHideD.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnHideD.Location = new System.Drawing.Point(620, 28);
+            this.btnHideD.Name = "btnHideD";
+            this.btnHideD.Size = new System.Drawing.Size(77, 29);
+            this.btnHideD.TabIndex = 33;
+            this.btnHideD.Text = "Hide";
+            this.btnHideD.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnHideD.UseVisualStyleBackColor = true;
+            this.btnHideD.Click += new System.EventHandler(this.btnShowD_Click);
+            // 
+            // btnShowD
+            // 
+            this.btnShowD.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnShowD.IconChar = FontAwesome.Sharp.IconChar.Eye;
+            this.btnShowD.IconColor = System.Drawing.Color.Black;
+            this.btnShowD.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnShowD.IconSize = 30;
+            this.btnShowD.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnShowD.Location = new System.Drawing.Point(620, 28);
+            this.btnShowD.Name = "btnShowD";
+            this.btnShowD.Size = new System.Drawing.Size(77, 29);
+            this.btnShowD.TabIndex = 32;
+            this.btnShowD.Text = "Show";
+            this.btnShowD.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnShowD.UseVisualStyleBackColor = true;
+            this.btnShowD.Click += new System.EventHandler(this.btnShowD_Click);
+            // 
+            // btnDecrypt
+            // 
+            this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDecrypt.IconChar = FontAwesome.Sharp.IconChar.Unlock;
+            this.btnDecrypt.IconColor = System.Drawing.Color.DarkGreen;
+            this.btnDecrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnDecrypt.IconSize = 60;
+            this.btnDecrypt.Location = new System.Drawing.Point(10, 148);
+            this.btnDecrypt.Name = "btnDecrypt";
+            this.btnDecrypt.Size = new System.Drawing.Size(971, 90);
+            this.btnDecrypt.TabIndex = 31;
+            this.btnDecrypt.Text = "Decrypt";
+            this.btnDecrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnDecrypt.UseVisualStyleBackColor = true;
+            this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(61, 106);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 21);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "Input Path";
+            // 
+            // txtInputDecrypt
+            // 
+            this.txtInputDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtInputDecrypt.Location = new System.Drawing.Point(141, 100);
+            this.txtInputDecrypt.Name = "txtInputDecrypt";
+            this.txtInputDecrypt.Size = new System.Drawing.Size(479, 29);
+            this.txtInputDecrypt.TabIndex = 30;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(61, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 21);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Password";
+            // 
+            // txtPasswordDecrypt
+            // 
+            this.txtPasswordDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtPasswordDecrypt.Location = new System.Drawing.Point(141, 28);
+            this.txtPasswordDecrypt.MaxLength = 32;
+            this.txtPasswordDecrypt.Name = "txtPasswordDecrypt";
+            this.txtPasswordDecrypt.PasswordChar = '●';
+            this.txtPasswordDecrypt.Size = new System.Drawing.Size(479, 29);
+            this.txtPasswordDecrypt.TabIndex = 28;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtPassword.Location = new System.Drawing.Point(141, 28);
+            this.txtPassword.MaxLength = 32;
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '●';
+            this.txtPassword.Size = new System.Drawing.Size(262, 29);
+            this.txtPassword.TabIndex = 6;
+            // 
+            // formNMCrypt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(889, 361);
-            this.Controls.Add(this.txtInput);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(997, 422);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.btnVerifyfile);
-            this.Controls.Add(this.btnBrowserfolder);
-            this.Controls.Add(this.chbxDisplaypassword);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.lblPassword);
-            this.Controls.Add(this.lblInupt);
-            this.Controls.Add(this.btnDecrypt);
-            this.Controls.Add(this.btnEncrypt);
-            this.Controls.Add(this.btnBrowserfile);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.Name = "NMEncrypt";
+            this.Name = "formNMCrypt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NMCrypt";
+            this.Load += new System.EventHandler(this.formNMCrypt_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabEncrypt.ResumeLayout(false);
+            this.tabEncrypt.PerformLayout();
+            this.tabCheck.ResumeLayout(false);
+            this.tabCheck.PerformLayout();
+            this.tabDecrypt.ResumeLayout(false);
+            this.tabDecrypt.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button btnBrowserfile;
-        private System.Windows.Forms.Button btnEncrypt;
-        private System.Windows.Forms.Button btnDecrypt;
         private System.Windows.Forms.Label lblInupt;
         private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.CheckBox chbxDisplaypassword;
-        private System.Windows.Forms.Button btnBrowserfolder;
+        private System.Windows.Forms.TextBox txtPasswordEncrypt;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem printPreviewToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
@@ -522,11 +764,34 @@ namespace FileEncryptAES
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.Button btnVerifyfile;
         private System.Windows.Forms.Label lblStatus;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.TextBox txtInput;
+        private System.Windows.Forms.TextBox txtInputEncrypt;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabEncrypt;
+        private System.Windows.Forms.TabPage tabCheck;
+        private System.Windows.Forms.TabPage tabDecrypt;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtInputDecrypt;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtPasswordDecrypt;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtInputCheck;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.ToolStripMenuItem importprkeyToolStripMenuItem;
+        private FontAwesome.Sharp.IconButton btnEncrypt;
+        private FontAwesome.Sharp.IconButton btnCheck;
+        private FontAwesome.Sharp.IconButton btnDecrypt;
+        private FontAwesome.Sharp.IconButton btnShow;
+        private FontAwesome.Sharp.IconButton btnHide;
+        private FontAwesome.Sharp.IconButton btnHideD;
+        private FontAwesome.Sharp.IconButton btnShowD;
+        private FontAwesome.Sharp.IconButton btnBrowserfileDecrypt;
+        private FontAwesome.Sharp.IconButton btnBrowserfolder;
+        private FontAwesome.Sharp.IconButton btnBrowserfileEncrypt;
+        private FontAwesome.Sharp.IconButton btnImportKey;
+        private FontAwesome.Sharp.IconButton iconButton2;
     }
 }
 
