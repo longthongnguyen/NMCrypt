@@ -62,7 +62,7 @@ namespace FileEncryptAES
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.lblStatus = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressContinuous = new System.Windows.Forms.ProgressBar();
             this.txtInputEncrypt = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabEncrypt = new System.Windows.Forms.TabPage();
@@ -73,7 +73,7 @@ namespace FileEncryptAES
             this.btnEncrypt = new FontAwesome.Sharp.IconButton();
             this.tabCheck = new System.Windows.Forms.TabPage();
             this.btnImportKey = new FontAwesome.Sharp.IconButton();
-            this.iconButton2 = new FontAwesome.Sharp.IconButton();
+            this.btnBrowserfileCheck = new FontAwesome.Sharp.IconButton();
             this.btnCheck = new FontAwesome.Sharp.IconButton();
             this.label3 = new System.Windows.Forms.Label();
             this.txtInputCheck = new System.Windows.Forms.TextBox();
@@ -86,7 +86,11 @@ namespace FileEncryptAES
             this.txtInputDecrypt = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPasswordDecrypt = new System.Windows.Forms.TextBox();
+            this.btnReset = new FontAwesome.Sharp.IconButton();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.lblPercentcount = new System.Windows.Forms.Label();
+            this.progressBarmarquee = new System.Windows.Forms.ProgressBar();
+            this.chbTopmost = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabEncrypt.SuspendLayout();
@@ -179,6 +183,7 @@ namespace FileEncryptAES
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -265,20 +270,21 @@ namespace FileEncryptAES
             // keygenerateToolStripMenuItem
             // 
             this.keygenerateToolStripMenuItem.Name = "keygenerateToolStripMenuItem";
-            this.keygenerateToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.keygenerateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.keygenerateToolStripMenuItem.Size = new System.Drawing.Size(310, 26);
             this.keygenerateToolStripMenuItem.Text = "Generate RSA Key (.pem)";
             this.keygenerateToolStripMenuItem.Click += new System.EventHandler(this.keygenerateToolStripMenuItem_Click);
             // 
             // customizeToolStripMenuItem
             // 
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(310, 26);
             this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(310, 26);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // helpToolStripMenuItem
@@ -331,6 +337,7 @@ namespace FileEncryptAES
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
+            this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -343,11 +350,11 @@ namespace FileEncryptAES
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblStatus.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblStatus.Location = new System.Drawing.Point(177, 335);
+            this.lblStatus.Location = new System.Drawing.Point(176, 333);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(79, 21);
+            this.lblStatus.Size = new System.Drawing.Size(58, 21);
             this.lblStatus.TabIndex = 21;
-            this.lblStatus.Text = "Welcome!";
+            this.lblStatus.Text = "Ready!";
             // 
             // backgroundWorker1
             // 
@@ -356,12 +363,15 @@ namespace FileEncryptAES
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
-            // progressBar1
+            // progressContinuous
             // 
-            this.progressBar1.Location = new System.Drawing.Point(177, 359);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(634, 33);
-            this.progressBar1.TabIndex = 22;
+            this.progressContinuous.Location = new System.Drawing.Point(177, 359);
+            this.progressContinuous.MarqueeAnimationSpeed = 1;
+            this.progressContinuous.Name = "progressContinuous";
+            this.progressContinuous.Size = new System.Drawing.Size(634, 33);
+            this.progressContinuous.Step = 100;
+            this.progressContinuous.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressContinuous.TabIndex = 22;
             // 
             // txtInputEncrypt
             // 
@@ -373,6 +383,7 @@ namespace FileEncryptAES
             // 
             // tabControl1
             // 
+            this.tabControl1.AllowDrop = true;
             this.tabControl1.Controls.Add(this.tabEncrypt);
             this.tabControl1.Controls.Add(this.tabCheck);
             this.tabControl1.Controls.Add(this.tabDecrypt);
@@ -472,6 +483,7 @@ namespace FileEncryptAES
             // 
             // btnEncrypt
             // 
+            this.btnEncrypt.AllowDrop = true;
             this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnEncrypt.IconChar = FontAwesome.Sharp.IconChar.Lock;
             this.btnEncrypt.IconColor = System.Drawing.Color.DarkGreen;
@@ -485,12 +497,14 @@ namespace FileEncryptAES
             this.btnEncrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnEncrypt.UseVisualStyleBackColor = true;
             this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
+            this.btnEncrypt.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragDrop);
+            this.btnEncrypt.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragEnter);
             // 
             // tabCheck
             // 
             this.tabCheck.BackColor = System.Drawing.SystemColors.Control;
             this.tabCheck.Controls.Add(this.btnImportKey);
-            this.tabCheck.Controls.Add(this.iconButton2);
+            this.tabCheck.Controls.Add(this.btnBrowserfileCheck);
             this.tabCheck.Controls.Add(this.btnCheck);
             this.tabCheck.Controls.Add(this.label3);
             this.tabCheck.Controls.Add(this.txtInputCheck);
@@ -520,25 +534,26 @@ namespace FileEncryptAES
             this.btnImportKey.UseVisualStyleBackColor = true;
             this.btnImportKey.Click += new System.EventHandler(this.btnImportKey_Click);
             // 
-            // iconButton2
+            // btnBrowserfileCheck
             // 
-            this.iconButton2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.File;
-            this.iconButton2.IconColor = System.Drawing.Color.Black;
-            this.iconButton2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton2.IconSize = 35;
-            this.iconButton2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.iconButton2.Location = new System.Drawing.Point(640, 94);
-            this.iconButton2.Name = "iconButton2";
-            this.iconButton2.Size = new System.Drawing.Size(135, 39);
-            this.iconButton2.TabIndex = 35;
-            this.iconButton2.Text = "Browser File";
-            this.iconButton2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.iconButton2.UseVisualStyleBackColor = true;
-            this.iconButton2.Click += new System.EventHandler(this.btnBrowserfileCheck_Click);
+            this.btnBrowserfileCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBrowserfileCheck.IconChar = FontAwesome.Sharp.IconChar.File;
+            this.btnBrowserfileCheck.IconColor = System.Drawing.Color.Black;
+            this.btnBrowserfileCheck.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBrowserfileCheck.IconSize = 35;
+            this.btnBrowserfileCheck.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnBrowserfileCheck.Location = new System.Drawing.Point(640, 94);
+            this.btnBrowserfileCheck.Name = "btnBrowserfileCheck";
+            this.btnBrowserfileCheck.Size = new System.Drawing.Size(135, 39);
+            this.btnBrowserfileCheck.TabIndex = 35;
+            this.btnBrowserfileCheck.Text = "Browser File";
+            this.btnBrowserfileCheck.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnBrowserfileCheck.UseVisualStyleBackColor = true;
+            this.btnBrowserfileCheck.Click += new System.EventHandler(this.btnBrowserfileCheck_Click);
             // 
             // btnCheck
             // 
+            this.btnCheck.AllowDrop = true;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnCheck.IconChar = FontAwesome.Sharp.IconChar.Check;
             this.btnCheck.IconColor = System.Drawing.Color.DarkGreen;
@@ -552,6 +567,8 @@ namespace FileEncryptAES
             this.btnCheck.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnCheck.UseVisualStyleBackColor = true;
             this.btnCheck.Click += new System.EventHandler(this.btnVerifyfile_Click);
+            this.btnCheck.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragDrop);
+            this.btnCheck.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragEnter);
             // 
             // label3
             // 
@@ -620,6 +637,7 @@ namespace FileEncryptAES
             this.btnHideD.Text = "Hide";
             this.btnHideD.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnHideD.UseVisualStyleBackColor = true;
+            this.btnHideD.Visible = false;
             this.btnHideD.Click += new System.EventHandler(this.btnShowD_Click);
             // 
             // btnShowD
@@ -641,6 +659,7 @@ namespace FileEncryptAES
             // 
             // btnDecrypt
             // 
+            this.btnDecrypt.AllowDrop = true;
             this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnDecrypt.IconChar = FontAwesome.Sharp.IconChar.Unlock;
             this.btnDecrypt.IconColor = System.Drawing.Color.DarkGreen;
@@ -654,6 +673,8 @@ namespace FileEncryptAES
             this.btnDecrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDecrypt.UseVisualStyleBackColor = true;
             this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
+            this.btnDecrypt.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragDrop);
+            this.btnDecrypt.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnEncrypt_DragEnter);
             // 
             // label1
             // 
@@ -693,6 +714,22 @@ namespace FileEncryptAES
             this.txtPasswordDecrypt.Size = new System.Drawing.Size(479, 29);
             this.txtPasswordDecrypt.TabIndex = 28;
             // 
+            // btnReset
+            // 
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnReset.IconChar = FontAwesome.Sharp.IconChar.Sync;
+            this.btnReset.IconColor = System.Drawing.Color.DarkRed;
+            this.btnReset.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnReset.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnReset.Location = new System.Drawing.Point(917, 342);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(68, 68);
+            this.btnReset.TabIndex = 37;
+            this.btnReset.Text = "RESET";
+            this.btnReset.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -703,14 +740,47 @@ namespace FileEncryptAES
             this.txtPassword.Size = new System.Drawing.Size(262, 29);
             this.txtPassword.TabIndex = 6;
             // 
+            // lblPercentcount
+            // 
+            this.lblPercentcount.AutoSize = true;
+            this.lblPercentcount.BackColor = System.Drawing.SystemColors.Control;
+            this.lblPercentcount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblPercentcount.Location = new System.Drawing.Point(766, 335);
+            this.lblPercentcount.Name = "lblPercentcount";
+            this.lblPercentcount.Size = new System.Drawing.Size(0, 21);
+            this.lblPercentcount.TabIndex = 27;
+            // 
+            // progressBarmarquee
+            // 
+            this.progressBarmarquee.Location = new System.Drawing.Point(177, 359);
+            this.progressBarmarquee.Name = "progressBarmarquee";
+            this.progressBarmarquee.Size = new System.Drawing.Size(634, 33);
+            this.progressBarmarquee.Step = 100;
+            this.progressBarmarquee.TabIndex = 28;
+            // 
+            // chbTopmost
+            // 
+            this.chbTopmost.AutoSize = true;
+            this.chbTopmost.Location = new System.Drawing.Point(922, 32);
+            this.chbTopmost.Name = "chbTopmost";
+            this.chbTopmost.Size = new System.Drawing.Size(75, 19);
+            this.chbTopmost.TabIndex = 38;
+            this.chbTopmost.Text = "Top Most";
+            this.chbTopmost.UseVisualStyleBackColor = true;
+            this.chbTopmost.CheckedChanged += new System.EventHandler(this.chbTopmost_CheckedChanged);
+            // 
             // formNMCrypt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(997, 422);
+            this.Controls.Add(this.chbTopmost);
+            this.Controls.Add(this.btnReset);
+            this.Controls.Add(this.progressBarmarquee);
+            this.Controls.Add(this.lblPercentcount);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.progressContinuous);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -766,7 +836,7 @@ namespace FileEncryptAES
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Label lblStatus;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressContinuous;
         private System.Windows.Forms.TextBox txtInputEncrypt;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabEncrypt;
@@ -791,7 +861,11 @@ namespace FileEncryptAES
         private FontAwesome.Sharp.IconButton btnBrowserfolder;
         private FontAwesome.Sharp.IconButton btnBrowserfileEncrypt;
         private FontAwesome.Sharp.IconButton btnImportKey;
-        private FontAwesome.Sharp.IconButton iconButton2;
+        private FontAwesome.Sharp.IconButton btnBrowserfileCheck;
+        private System.Windows.Forms.Label lblPercentcount;
+        private System.Windows.Forms.ProgressBar progressBarmarquee;
+        private FontAwesome.Sharp.IconButton btnReset;
+        private System.Windows.Forms.CheckBox chbTopmost;
     }
 }
 

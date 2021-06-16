@@ -32,7 +32,7 @@ namespace FileEncryptAES
             CheckForIllegalCrossThreadCalls = false;
             newToolStripMenuItem.Enabled = false;
             openToolStripMenuItem.Enabled = false;
-            exitToolStripMenuItem.Enabled = false;
+            //exitToolStripMenuItem.Enabled = false;
             customizeToolStripMenuItem.Enabled = false;
             optionsToolStripMenuItem.Enabled = false;
             contentsToolStripMenuItem.Enabled = false;
@@ -42,10 +42,62 @@ namespace FileEncryptAES
             editToolStripMenuItem.Visible = false;
             btnHide.Visible = false;
         }
+        private void BeforeWorkerStart()
+        {
+            importprkeyToolStripMenuItem.Enabled = false;
+            keygenerateToolStripMenuItem.Enabled = false;
+            txtPasswordEncrypt.Enabled = false;
+            txtInputEncrypt.Enabled = false;
+            btnBrowserfileEncrypt.Enabled = false;
+            btnBrowserfolder.Enabled = false;
+            btnEncrypt.Enabled = false;
+            btnImportKey.Enabled = false;
+            txtInputCheck.Enabled = false;
+            btnBrowserfileCheck.Enabled = false;
+            btnCheck.Enabled = false;
+            txtPasswordDecrypt.Enabled = false;
+            txtInputDecrypt.Enabled = false;
+            btnBrowserfileDecrypt.Enabled = false;
+            btnDecrypt.Enabled = false;
+            exitToolStripMenuItem.Enabled = false;
+        }
+        private void AfterWorkerStop()
+        {
+            importprkeyToolStripMenuItem.Enabled = true;
+            keygenerateToolStripMenuItem.Enabled = true;
+            txtPasswordEncrypt.Enabled = true;
+            txtInputEncrypt.Enabled = true;
+            btnBrowserfileEncrypt.Enabled = true;
+            btnBrowserfolder.Enabled = true;
+            btnEncrypt.Enabled = true;
+            btnImportKey.Enabled = true;
+            txtInputCheck.Enabled = true;
+            btnBrowserfileCheck.Enabled = true;
+            btnCheck.Enabled = true;
+            txtPasswordDecrypt.Enabled = true;
+            txtInputDecrypt.Enabled = true;
+            btnBrowserfileDecrypt.Enabled = true;
+            btnDecrypt.Enabled = true;
+            exitToolStripMenuItem.Enabled = true;
+        }
+
+        //Disable close button
+        private const int CP_DISABLE_CLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle = cp.ClassStyle | CP_DISABLE_CLOSE_BUTTON;
+                return cp;
+            }
+        }
+
         string workerOptions = "";
         string pathToSave = "";
         string _PRIVATEKEY = "";
         string _PUBLICKEY = "";
+        string _FINALMESSAGE = "";
         //string _DROPEDPATH = "";
         int statusCount = 0;
         int statusLength = 1;
@@ -64,8 +116,6 @@ namespace FileEncryptAES
                 long rdlen = 0;
                 long totlen = fsInput.Length;
                 int len;
-                //progressBar1.Minimum = 0;
-                //progressBar1.Maximum = 100;
 
                 byte[] salt = new byte[32];
 
@@ -109,6 +159,8 @@ namespace FileEncryptAES
                     cryptStream = new CryptoStream(fsCipherText, AES.CreateDecryptor(), CryptoStreamMode.Write);
                 }
                 //Read from the input file, then encrypt and write to the output file.
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
                 while (rdlen < totlen)
                 {
                     long position = fsInput.Position;
@@ -121,18 +173,32 @@ namespace FileEncryptAES
                     }
                     cryptStream.Write(bin, 0, len);
 
-                    //label1.Text = "Tên tệp xử lý : " + Path.GetFileName(inputFile) + "\t Thành công: " + ((long)(rdlen * 100) / totlen).ToString() + " %";
-                    //label1.Refresh();
+                    int value = (int)((rdlen * 100) / totlen);
+                    if(value != progressContinuous.Maximum)
+                    {
+                        progressContinuous.Value = value + 1;
+                    }
+                    else
+                    {
+                        progressContinuous.Maximum = value + 1;
+                        progressContinuous.Value = value + 1;
+                        progressContinuous.Maximum = value;
+                    }
+                    progressContinuous.Value = value;
+                    progressContinuous.Refresh();
 
-                    //progressBar1.Value = (int)((rdlen * 100) / totlen);
-
+                    lblPercentcount.Text = ((long)(rdlen * 100) / totlen).ToString() + " %";
+                    lblPercentcount.Refresh();
                 }
                 cryptStream.FlushFinalBlock();
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
 
                 if (isEncrypt)
                 {
+                    progressBarmarquee.Visible = true;
                     //Hash File:
-                    lblStatus.Text = statusCount + "/" + statusLength + ". Get Hash value...";
+                    lblStatus.Text = statusCount + "/" + statusLength + ". Signing to file...";
                     statusCount++;
                     fsCipherText.Position = 0;
                     string SHAoutput = HashFile(fsCipherText);
@@ -141,6 +207,7 @@ namespace FileEncryptAES
                     byte[] DGSignByte = Convert.FromBase64String(DGSignBase64);
                     fsCipherText.Write(DGSignByte, 0, DGSignByte.Length);
                     //txtDGsignature.Text = RsaEncryptWithPrivate(txtSHAoutput.Text, "privateKey.pem");
+                    progressBarmarquee.Visible = false;
                 }
                 else
                 {
@@ -148,14 +215,6 @@ namespace FileEncryptAES
                     //isGotDGSign = false;
                     //fsCipherText.SetLength( fsCipherText.Length - 384 );
                 }
-
-
-                ////if (progressBar1.IsHandleCreated && isEncryptFile)
-                ////{
-                ////    System.Diagnostics.Process prc = new System.Diagnostics.Process();
-                ////    prc.StartInfo.FileName = Path.GetDirectoryName(txtInput.Text);
-                ////    prc.Start();
-                ////}
 
                 try
                 {
@@ -166,7 +225,7 @@ namespace FileEncryptAES
                 }
                 catch
                 {
-                    if( isGotDGSign && !isEncrypt )
+                    if ( isGotDGSign && !isEncrypt )
                     {
                         fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
                         isGotDGSign = false;
@@ -239,7 +298,7 @@ namespace FileEncryptAES
             if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
             {
                 pathToSave = path + ".NMTemp";
-                int count = 1;
+                int count = 1;  
                 while (File.Exists(pathToSave))
                 {
                     count++;
@@ -322,20 +381,25 @@ namespace FileEncryptAES
                 backgroundWorker1.Dispose();
                 if(_PRIVATEKEY == "")
                 {
-                    MessageBox.Show("You need to import your private key first! \nGo to File -> Import Private Key (.PEM)", "Error!");
+                    MessageBox.Show(this, "You need to import your private key first! \nGo to File -> Import Private Key (.pem)", "NMCrypt Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                     return;
                 }
                 if (!File.Exists(txtInputEncrypt.Text))
                 {
                     if(!Directory.Exists(txtInputEncrypt.Text))
                     {
-                        MessageBox.Show("Invalid input path. Couldn't find your file or folder!", "Error!");
+                        MessageBox.Show(this, "Invalid input path. Couldn't find your file or folder!", "NMCrypt Message", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                         return;
                     }
                 }
                 workerOptions = "encrypt";
                 if (!backgroundWorker1.IsBusy)
                 {
+                    progressBarmarquee.Visible = false;
+                    progressBarmarquee.Style = ProgressBarStyle.Marquee;
+                    progressBarmarquee.MarqueeAnimationSpeed = 1;
                     backgroundWorker1.RunWorkerAsync();
                 }
                 else
@@ -368,8 +432,10 @@ namespace FileEncryptAES
                         outputFileName = inputFileName + " (" + count + ")" + ".NMCryptF";
                     }
                     lblStatus.Text = statusCount + "/" + statusLength + ". " + "Compressing folder...";
+                    //progressBarmarquee.Visible = true;
                     statusCount++;
                     CompressFolder(inputFileName);
+                    //progressBarmarquee.Visible = false;
                     inputFileName = pathToSave;
                 }
                 else
@@ -383,21 +449,28 @@ namespace FileEncryptAES
                         outputFileName = Path.Combine(Path.GetDirectoryName(inputFileName), Path.GetFileNameWithoutExtension(inputFileName) + " (" + count + ")" + Path.GetExtension(inputFileName) + ".NMCrypt");
                     }
                 }
-
                 lblStatus.Text = statusCount + "/" + statusLength + ". " + fileOrfolder + " is being encrypt...";
                 statusCount++;
                 AESAlgorithm(inputFileName, outputFileName, password, true);
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
 
-                if(fileOrfolder == "Folder")
+                if (fileOrfolder == "Folder")
                 {
                     DeleteFile(inputFileName);
                 }
-                lblStatus.Text = "Welcome!";
-                MessageBox.Show("File save at\n" + outputFileName, "Completed!");
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
+                progressContinuous.Value = 0;
+                lblStatus.Text = "Ready!";
+                _FINALMESSAGE = "File save at\n" + outputFileName;
             }
             catch
             {
-                lblStatus.Text = "Welcome!";
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
+                progressContinuous.Value = 0;
+                lblStatus.Text = "Ready!";
             }
         }
 
@@ -406,25 +479,40 @@ namespace FileEncryptAES
             try
             {
                 backgroundWorker1.Dispose();
-                if (!File.Exists(txtInputDecrypt.Text))
+                FileAttributes attr = File.GetAttributes(txtInputDecrypt.Text);
+                if (attr.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Directory.Exists(txtInputDecrypt.Text))
-                    {
-                        MessageBox.Show("Invalid input path. Couldn't find your file or folder!", "Error!");
-                        return;
-                    }
+                    MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    return;
                 }
                 else
                 {
-                    if (Path.GetExtension(txtInputDecrypt.Text) != ".NMCryptF" && Path.GetExtension(txtInputDecrypt.Text) != ".NMCrypt" )
+                    if (!File.Exists(txtInputDecrypt.Text))
                     {
-                        MessageBox.Show("Sorry, this file type is not supported here!", "Error!");
-                        return;
+                        if (!Directory.Exists(txtInputDecrypt.Text))
+                        {
+                            MessageBox.Show(this, "Invalid input path. Couldn't find your file!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (Path.GetExtension(txtInputDecrypt.Text) != ".NMCryptF" && Path.GetExtension(txtInputDecrypt.Text) != ".NMCrypt")
+                        {
+                            MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            return;
+                        }
                     }
                 }
                 workerOptions = "decrypt";
                 if (!backgroundWorker1.IsBusy)
                 {
+                    progressBarmarquee.Visible = false;
+                    progressBarmarquee.Style = ProgressBarStyle.Marquee;
+                    progressBarmarquee.MarqueeAnimationSpeed = 1;
                     backgroundWorker1.RunWorkerAsync();
                 }
                 else
@@ -445,7 +533,6 @@ namespace FileEncryptAES
             string tempFileName = "";
             try
             {
-
                 string fileOrfolder = "";
                 if (Path.GetExtension(inputFileName) == ".NMCryptF")
                 {
@@ -483,25 +570,35 @@ namespace FileEncryptAES
                 lblStatus.Text = statusCount + "/" + statusLength + ". " + fileOrfolder + " is being decrypt...";
                 statusCount++;
                 AESAlgorithm(inputFileName, outputFileName, password, false);
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
 
-                if(fileOrfolder == "Folder")
+                if (fileOrfolder == "Folder")
                 {
+                    progressBarmarquee.Visible = true;
                     lblStatus.Text = statusCount + "/" + statusLength + ". " + "Extracting...";
                     statusCount++;
                     ExtractFolder(outputFileName);
                     DeleteFile(outputFileName);
+                    progressBarmarquee.Visible = false;
                     outputFileName = pathToSave;
                 }
 
-                lblStatus.Text = "Welcome!";
-                MessageBox.Show(fileOrfolder + " save at " + outputFileName, "Completed!");
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
+                progressContinuous.Value = 0;
+                lblStatus.Text = "Ready!";
+                _FINALMESSAGE = fileOrfolder + " save at " + outputFileName;
             }
             catch
             {
                 DeleteFile(outputFileName);
                 DeleteFolder(pathToSave);
-                lblStatus.Text = "Welcome!";
-                MessageBox.Show("Cannot decrypt, Password incorrect!", "Error!");
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
+                progressContinuous.Value = 0;
+                lblStatus.Text = "Ready!";
+                _FINALMESSAGE = "Cannot decrypt, Password incorrect!";
             }
         }
         private void keygenerateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -518,25 +615,29 @@ namespace FileEncryptAES
                     pathToSave = fb.SelectedPath;
                     if (!backgroundWorker1.IsBusy)
                     {
+                        progressBarmarquee.Visible = false;
+                        progressBarmarquee.Style = ProgressBarStyle.Marquee;
+                        progressBarmarquee.MarqueeAnimationSpeed = 1;
                         backgroundWorker1.RunWorkerAsync();
                     }
                     else
                     {
-
-                        lblStatus.Text = "Welcome!";
+                        lblStatus.Text = "Ready!";
                         return;
                     }
-
                 }
             }
             catch 
             {
                 pathToSave = "";
-                lblStatus.Text = "Welcome!";
+                lblStatus.Text = "Ready!";
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
             }
         }
         private void generateRSAKey(DoWorkEventArgs e)
         {
+            progressBarmarquee.Visible = true;
             lblStatus.Text = statusCount + "/" + statusLength + ". " + "Generating RSA public key and private key...";
             statusCount++;
             //RSA key pair Generator generates the RSA kay pair based on the Random Number and the strength of key required 
@@ -565,16 +666,18 @@ namespace FileEncryptAES
             pemWriter2.Writer.Flush();
             string print_privatekey = textWriter2.ToString();
             File.WriteAllText(pathToSave + @"\privateKey.pem", print_privatekey);
-            lblStatus.Text = "Welcome!";
 
-            MessageBox.Show("Filename: publicKey.pem & privateKey.pem\nAt " + pathToSave, "Generate and save key successful",
-                MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button3);
+            progressBarmarquee.Visible = false;
+            lblStatus.Text = "Ready!";
+            _FINALMESSAGE = "Generate RSA key successful!\nFilename: publicKey.pem & privateKey.pem \nAt " + pathToSave;
             pathToSave = "";
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            if(workerOptions == "encrypt")
+            btnReset.Enabled = false;
+            BeforeWorkerStart();
+            if (workerOptions == "encrypt")
             {
                 Encrypt(e);
                 return;
@@ -603,7 +706,12 @@ namespace FileEncryptAES
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            
+            progressBarmarquee.Visible = false;
+            progressBarmarquee.MarqueeAnimationSpeed = 0;
+            progressBarmarquee.Style = ProgressBarStyle.Continuous;
+            btnReset.Enabled = true;
+            AfterWorkerStop();
+            MessageBox.Show(this, _FINALMESSAGE, "NMCrypt Message", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
 
         private void btnVerifyfile_Click(object sender, EventArgs e)
@@ -613,22 +721,50 @@ namespace FileEncryptAES
                 backgroundWorker1.Dispose();
                 if(_PUBLICKEY == "")
                 {
-                    MessageBox.Show("You need to import public key first!", "Information!");
+                    MessageBox.Show(this, "You need to import public key first!", "NMCrypt Message", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                     return;
                 }
-                if (!File.Exists(txtInputCheck.Text))
+
+                FileAttributes attr = File.GetAttributes(txtInputCheck.Text);
+                if (attr.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Directory.Exists(txtInputCheck.Text))
+                    MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+                else
+                {
+                    if (!File.Exists(txtInputCheck.Text))
                     {
-                        MessageBox.Show("Invalid input path. Couldn't find your file or folder!", "Error!");
-                        return;
+                        if (!Directory.Exists(txtInputCheck.Text))
+                        {
+                            MessageBox.Show(this, "Invalid input path. Couldn't find your file!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (Path.GetExtension(txtInputCheck.Text) != ".NMCryptF" && Path.GetExtension(txtInputCheck.Text) != ".NMCrypt")
+                        {
+                            MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            return;
+                        }
                     }
                 }
+
+
+                
                 statusLength = 1;
                 statusCount = 1;
                 workerOptions = "verifyfile";
                 if (!backgroundWorker1.IsBusy)
                 {
+                    progressBarmarquee.Visible = false;
+                    progressBarmarquee.Style = ProgressBarStyle.Marquee;
+                    progressBarmarquee.MarqueeAnimationSpeed = 1;
                     backgroundWorker1.RunWorkerAsync();
                 }
                 else
@@ -646,6 +782,7 @@ namespace FileEncryptAES
             FileStream fsInput = new(inputFileName, FileMode.Open, FileAccess.ReadWrite);
             try
             {
+                progressBarmarquee.Visible = true;
                 lblStatus.Text = statusCount + "/" + statusLength + ". " + "Verifying file integrity";
                 statusCount++;
                 fsInput.Seek(-384, SeekOrigin.End);
@@ -657,14 +794,15 @@ namespace FileEncryptAES
                 fsInput.Position = 0;
                 string SHAComputeFromFile = HashFile(fsInput);
                 fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                lblStatus.Text = "Welcome!!";
+                progressBarmarquee.Visible = false;
+                lblStatus.Text = "Ready!";
                 if (SHAGetFromFile == SHAComputeFromFile)
                 {
-                    MessageBox.Show("Your file is safe. You can decrypt it!", "Notification");
+                    _FINALMESSAGE = "Your file is safe. You can decrypt it!";
                 }
                 else
                 {
-                    MessageBox.Show("This file has been change (Not have integrity)!", "Warning");
+                    _FINALMESSAGE = "Warning!\nThis file has been change (Not have integrity)!";
                 }
                 fsInput.Close();
             }
@@ -674,9 +812,9 @@ namespace FileEncryptAES
                 {
                     fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
                 }
-                lblStatus.Text = "Welcome!!";
+                lblStatus.Text = "Ready!!";
                 fsInput.Close();
-                MessageBox.Show("This file has been change (Not have integrity)!", "Warning!");
+                _FINALMESSAGE = "Warning!\nThis file has been change (Not have integrity)!";
             }
         }
 
@@ -688,24 +826,42 @@ namespace FileEncryptAES
         private void importpukeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new();
-            op.Filter = "PEM File (*.pem*)|*.pem*";
+            op.Filter = "File (*.pem*)|*.pem*";
             op.Title = "Import Private Key File (.pem)";
             if (op.ShowDialog() == DialogResult.OK)
             {
-                _PRIVATEKEY = op.FileName;
-                MessageBox.Show("Import private key completed", "Successful!");
+                if(File.ReadLines(op.FileName).First() == "-----BEGIN RSA PRIVATE KEY-----")
+                {
+                    _PRIVATEKEY = op.FileName;
+                    MessageBox.Show(this, "Import private key completed", "NMCrypt Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                }
+                else
+                {
+                    MessageBox.Show(this, "Invalid private key.", "NMCrypt Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                }
             }
         }
 
         private void btnImportKey_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new();
-            op.Filter = "PEM File (*.pem*)|*.pem*";
+            op.Filter = "File (*.pem)|*.pem";
             op.Title = "Import Public Key File (.pem)";
             if (op.ShowDialog() == DialogResult.OK)
             {
-                _PUBLICKEY = op.FileName;
-                MessageBox.Show("Import public key completed", "Successful!");
+                if (File.ReadLines(op.FileName).First() == "-----BEGIN PUBLIC KEY-----")
+                {
+                    _PUBLICKEY = op.FileName;
+                    MessageBox.Show(this, "Import public key completed", "NMCrypt Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                }
+                else
+                {
+                    MessageBox.Show(this, "Invalid public key.", "NMCrypt Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                }
             }
         }
 
@@ -713,7 +869,7 @@ namespace FileEncryptAES
         {
             txtInputCheck.Text = "";
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All Files (*.*)|*.*";
+            op.Filter = "File (*.NMCrypt;*.NMCryptf)|*.NMCrypt;*NMCryptF";
             op.Title = "Select File";
             if (op.ShowDialog() == DialogResult.OK)
             {
@@ -725,7 +881,7 @@ namespace FileEncryptAES
         {
             txtInputDecrypt.Text = "";
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All Files (*.*)|*.*";
+            op.Filter = "File (*.NMCrypt;*.NMCryptf)|*.NMCrypt;*NMCryptF";
             op.Title = "Select File";
             if (op.ShowDialog() == DialogResult.OK)
             {
@@ -746,6 +902,97 @@ namespace FileEncryptAES
                 txtPasswordDecrypt.PasswordChar = '\u25cf';
                 btnHideD.Visible = false;
                 btnShowD.Visible = true;
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            importprkeyToolStripMenuItem.Enabled = true;
+            keygenerateToolStripMenuItem.Enabled = true;
+            txtPasswordEncrypt.Enabled = true;
+            txtInputEncrypt.Enabled = true;
+            btnBrowserfileEncrypt.Enabled = true;
+            btnBrowserfolder.Enabled = true;
+            btnEncrypt.Enabled = true;
+            btnImportKey.Enabled = true;
+            txtInputCheck.Enabled = true;
+            btnBrowserfileCheck.Enabled = true;
+            btnCheck.Enabled = true;
+            txtPasswordDecrypt.Enabled = true;
+            txtInputDecrypt.Enabled = true;
+            btnBrowserfileDecrypt.Enabled = true;
+            btnDecrypt.Enabled = true;
+            exitToolStripMenuItem.Enabled = true;
+
+            txtPasswordEncrypt.Text = "";
+            txtInputEncrypt.Text = "";
+            txtInputCheck.Text = "";
+            txtPasswordDecrypt.Text = "";
+            txtInputDecrypt.Text = "";
+            workerOptions = "";
+            pathToSave = "";
+            _PRIVATEKEY = "";
+            _PUBLICKEY = "";
+            _FINALMESSAGE = "";
+            //string _DROPEDPATH = "";
+            statusCount = 0;
+            statusLength = 1;
+        }
+
+        private void chbTopmost_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chbTopmost.Checked)
+            {
+                this.TopMost = true;
+            }
+            else
+            {
+                this.TopMost = false;
+            }
+        }
+
+        private void btnEncrypt_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            if(fileList.Length == 1)
+            {
+                if(tabControl1.SelectedTab == tabEncrypt)
+                {
+                    txtInputEncrypt.Text = fileList[0];
+                    btnEncrypt_Click(sender, e);
+                }
+                if (tabControl1.SelectedTab == tabCheck)
+                {
+                    txtInputCheck.Text = fileList[0];
+                    btnVerifyfile_Click(sender, e);
+                }
+                if (tabControl1.SelectedTab == tabDecrypt)
+                {
+                    txtInputDecrypt.Text = fileList[0];
+                    btnDecrypt_Click(sender, e);
+                }
+            }
+        }
+
+        private void btnEncrypt_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to exit?", "NMCrypt Confirm Exit", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if(result == System.Windows.Forms.DialogResult.Yes)
+            {
+                Application.Exit();
             }
         }
     }
