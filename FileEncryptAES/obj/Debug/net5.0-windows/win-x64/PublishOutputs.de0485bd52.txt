@@ -1,0 +1,2 @@
+C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\bin\Debug\net5.0-windows\win-x64\publish\FileEncryptAES.pdb
+C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\bin\Debug\net5.0-windows\win-x64\publish\FileEncryptAES.exe

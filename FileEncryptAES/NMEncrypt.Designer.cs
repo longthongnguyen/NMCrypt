@@ -411,7 +411,7 @@ namespace FileEncryptAES
             this.tabEncrypt.Padding = new System.Windows.Forms.Padding(3);
             this.tabEncrypt.Size = new System.Drawing.Size(989, 250);
             this.tabEncrypt.TabIndex = 0;
-            this.tabEncrypt.Text = "Encrypt file and folder";
+            this.tabEncrypt.Text = "Lock file or folder";
             // 
             // btnBrowserfolder
             // 
@@ -484,7 +484,7 @@ namespace FileEncryptAES
             // btnEncrypt
             // 
             this.btnEncrypt.AllowDrop = true;
-            this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnEncrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnEncrypt.IconChar = FontAwesome.Sharp.IconChar.Lock;
             this.btnEncrypt.IconColor = System.Drawing.Color.DarkGreen;
             this.btnEncrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
@@ -493,7 +493,7 @@ namespace FileEncryptAES
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(971, 90);
             this.btnEncrypt.TabIndex = 25;
-            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.Text = "Lock";
             this.btnEncrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnEncrypt.UseVisualStyleBackColor = true;
             this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
@@ -603,7 +603,7 @@ namespace FileEncryptAES
             this.tabDecrypt.Name = "tabDecrypt";
             this.tabDecrypt.Size = new System.Drawing.Size(989, 250);
             this.tabDecrypt.TabIndex = 2;
-            this.tabDecrypt.Text = "Deccrypt file and folder";
+            this.tabDecrypt.Text = "Unlock file or folder";
             // 
             // btnBrowserfileDecrypt
             // 
@@ -660,7 +660,7 @@ namespace FileEncryptAES
             // btnDecrypt
             // 
             this.btnDecrypt.AllowDrop = true;
-            this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDecrypt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnDecrypt.IconChar = FontAwesome.Sharp.IconChar.Unlock;
             this.btnDecrypt.IconColor = System.Drawing.Color.DarkGreen;
             this.btnDecrypt.IconFont = FontAwesome.Sharp.IconFont.Auto;
@@ -669,7 +669,7 @@ namespace FileEncryptAES
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(971, 90);
             this.btnDecrypt.TabIndex = 31;
-            this.btnDecrypt.Text = "Decrypt";
+            this.btnDecrypt.Text = "Unlock";
             this.btnDecrypt.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDecrypt.UseVisualStyleBackColor = true;
             this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
@@ -784,6 +784,7 @@ namespace FileEncryptAES
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "formNMCrypt";

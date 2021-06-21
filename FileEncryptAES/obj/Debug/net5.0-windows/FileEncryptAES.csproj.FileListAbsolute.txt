@@ -17,7 +17,6 @@ C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\o
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\obj\Debug\net5.0-windows\FileEncryptAES.genruntimeconfig.cache
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\bin\Debug\net5.0-windows\BouncyCastle.Crypto.dll
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\obj\Debug\net5.0-windows\FileEncryptAES.csproj.CopyComplete
-C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\obj\Debug\net5.0-windows\FileEncryptAES.Processing.resources
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\obj\Debug\net5.0-windows\FileEncryptAES.formNMCrypt.resources
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\obj\Debug\net5.0-windows\FileEncryptAES.Properties.Resources.resources
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\FileEncryptAES\FileEncryptAES\bin\Debug\net5.0-windows\FontAwesome.Sharp.dll

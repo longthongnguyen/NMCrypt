@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "q9evabNWt5UNwgOnS74UWC7SUmOd6xm0c0VGk+5zxUW+iO1xY4jUGprGOsFBPzxxogjqxW1VHW4+Ca/7t5TSDQ==",
+  "dgSpecHash": "lFguLktN/nMPOmjGORBeQsyHXlxbWaamNUo5vQeXjdEtrv2vs7oKh3cHqWQj6UQPV9ng2E8FOLugp9+zto0lJA==",
   "success": true,
   "projectFilePath": "C:\\Users\\THONG\\Documents\\HOCTAP\\VisualStudio2019\\FileEncryptAES\\FileEncryptAES\\FileEncryptAES.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\THONG\\.nuget\\packages\\fontawesome.sharp\\5.15.3\\fontawesome.sharp.5.15.3.nupkg.sha512",
-    "C:\\Users\\THONG\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512"
+    "C:\\Users\\THONG\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512",
+    "C:\\Users\\THONG\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\5.0.4\\microsoft.netcore.app.runtime.win-x64.5.0.4.nupkg.sha512",
+    "C:\\Users\\THONG\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\5.0.4\\microsoft.windowsdesktop.app.runtime.win-x64.5.0.4.nupkg.sha512",
+    "C:\\Users\\THONG\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\5.0.4\\microsoft.aspnetcore.app.runtime.win-x64.5.0.4.nupkg.sha512"
   ],
   "logs": []
 }

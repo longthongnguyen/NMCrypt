@@ -111,7 +111,7 @@ namespace FileEncryptAES
             try
             {
                 fsCipherText.SetLength(0);
-                int numberBytesRead = 1048576;//1MB
+                int numberBytesRead = 2 * 1024 * 1024; //2MB
                 byte[] bin = new byte[numberBytesRead];
                 long rdlen = 0;
                 long totlen = fsInput.Length;
@@ -135,13 +135,13 @@ namespace FileEncryptAES
                     rdlen = 32;
                 }
 
-                byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(password);
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
                 RijndaelManaged AES = new();
                 AES.KeySize = 256;
                 AES.BlockSize = 128;
                 AES.Padding = PaddingMode.PKCS7;
-                AES.Mode = CipherMode.CFB;
-                AES.FeedbackSize = 128;
+                AES.Mode = CipherMode.CBC;
+                //AES.FeedbackSize = 128;
                 int iterations = 50000;
                 var key = new Rfc2898DeriveBytes(passwordBytes, salt, iterations);
                 AES.Key = key.GetBytes(AES.KeySize / 8);
@@ -164,7 +164,7 @@ namespace FileEncryptAES
                 while (rdlen < totlen)
                 {
                     long position = fsInput.Position;
-                    len = fsInput.Read(bin, 0, numberBytesRead); // Lần lượt đọc 1MB / 1 lần trong file input
+                    len = fsInput.Read(bin, 0, numberBytesRead); // Lần lượt đọc 2MB / 1 lần trong file input
                     rdlen = rdlen + len;
                     if(rdlen >= totlen && !isEncrypt)
                     {
@@ -261,7 +261,7 @@ namespace FileEncryptAES
 
         public string HashFile(FileStream stream)
         {
-            using var sha512 = SHA512.Create();
+            SHA512 sha512 = SHA512.Create();
             return BitConverter.ToString(sha512.ComputeHash(stream)).Replace("-", "").ToUpper();
         }
 
@@ -269,7 +269,7 @@ namespace FileEncryptAES
         {
             string privateKey = File.ReadAllText(prkeyPath);
             var bytesToEncrypt = Encoding.UTF8.GetBytes(clearText);
-            var encryptEngine = new Pkcs1Encoding(new RsaEngine());
+            var encryptEngine = new OaepEncoding(new RsaEngine());
             using (var txtreader = new StringReader(privateKey))
             {
                 var keyPair = (AsymmetricCipherKeyPair)new PemReader(txtreader).ReadObject();
@@ -283,7 +283,7 @@ namespace FileEncryptAES
         {
             string publicKey = File.ReadAllText(pbkeyPath);
             var bytesToDecrypt = Convert.FromBase64String(base64Input);
-            var decryptEngine = new Pkcs1Encoding(new RsaEngine());
+            var decryptEngine = new OaepEncoding(new RsaEngine());
             using (var txtreader = new StringReader(publicKey))
             {
                 var keyParameter = (AsymmetricKeyParameter)new PemReader(txtreader).ReadObject();
@@ -297,12 +297,12 @@ namespace FileEncryptAES
         {
             if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
             {
-                pathToSave = path + ".NMTemp";
+                pathToSave = path + ".NMcrx";
                 int count = 1;  
                 while (File.Exists(pathToSave))
                 {
                     count++;
-                    pathToSave = path + " (" + count + ")" + ".NMTemp";
+                    pathToSave = path + " (" + count + ")" + ".NMcrx";
                 }
                 ZipFile.CreateFromDirectory(path, pathToSave);
             }
@@ -311,7 +311,7 @@ namespace FileEncryptAES
         public void ExtractFolder(string path)
         {
             string fileType = Path.GetExtension(path);
-            if (fileType == ".NMTemp")
+            if (fileType == ".NMcrx")
             {
                 pathToSave = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path);
                 string tempPath = pathToSave;
@@ -432,10 +432,10 @@ namespace FileEncryptAES
                         outputFileName = inputFileName + " (" + count + ")" + ".NMCryptF";
                     }
                     lblStatus.Text = statusCount + "/" + statusLength + ". " + "Compressing folder...";
-                    //progressBarmarquee.Visible = true;
+                    progressBarmarquee.Visible = true;
                     statusCount++;
                     CompressFolder(inputFileName);
-                    //progressBarmarquee.Visible = false;
+                    progressBarmarquee.Visible = false;
                     inputFileName = pathToSave;
                 }
                 else
@@ -539,12 +539,12 @@ namespace FileEncryptAES
                     statusLength++;
                     fileOrfolder = "Folder";
                     tempFileName = Path.Combine(Path.GetDirectoryName(inputFileName), Path.GetFileNameWithoutExtension(inputFileName));
-                    outputFileName = tempFileName + ".NMTemp";
+                    outputFileName = tempFileName + ".NMcrx";
                     int count = 1;
                     while (File.Exists(outputFileName))
                     {
                         count++;
-                        outputFileName = tempFileName + " (" + count + ")" + ".NMTemp";
+                        outputFileName = tempFileName + " (" + count + ")" + ".NMcrx";
                     }
                 }
                 else
