@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -101,6 +102,7 @@ namespace FileEncryptAES
         //string _DROPEDPATH = "";
         int statusCount = 0;
         int statusLength = 1;
+        Stopwatch stopWatch = new Stopwatch();
 
         public void AESAlgorithm(String inputFile, String OutputFile, String password, bool isEncrypt)
         {
@@ -675,6 +677,8 @@ namespace FileEncryptAES
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            stopWatch.Reset();
+            stopWatch.Start();
             btnReset.Enabled = false;
             BeforeWorkerStart();
             if (workerOptions == "encrypt")
@@ -706,11 +710,15 @@ namespace FileEncryptAES
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}h {1:00}m {2:00}s {3:00}ms", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+
             progressBarmarquee.Visible = false;
             progressBarmarquee.MarqueeAnimationSpeed = 0;
             progressBarmarquee.Style = ProgressBarStyle.Continuous;
             btnReset.Enabled = true;
             AfterWorkerStop();
+            _FINALMESSAGE = _FINALMESSAGE + "\nTotal time: " + elapsedTime;
             MessageBox.Show(this, _FINALMESSAGE, "NMCrypt Message", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
 
