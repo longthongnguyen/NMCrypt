@@ -107,8 +107,7 @@ namespace FileEncryptAES
         public void AESAlgorithm(String inputFile, String OutputFile, String password, bool isEncrypt)
         {
             byte[] DGSignFromFile = new byte[384];
-            bool isGotDGSign = false;
-            FileStream fsInput = new(inputFile, FileMode.Open, FileAccess.ReadWrite);
+            FileStream fsInput = new(inputFile, FileMode.Open, FileAccess.Read);
             FileStream fsCipherText = new(OutputFile, FileMode.Create, FileAccess.ReadWrite);
             try
             {
@@ -127,11 +126,6 @@ namespace FileEncryptAES
                 }
                 else
                 {
-                    //fsInput.Seek(-384, SeekOrigin.End);
-                    //fsInput.Read(DGSignFromFile, 0, DGSignFromFile.Length);
-                    //fsInput.SetLength(totlen - DGSignFromFile.Length);
-                    //isGotDGSign = true;
-                    //totlen = fsInput.Length;
                     fsInput.Position = 0;
                     fsInput.Read(salt, 0, salt.Length);
                     rdlen = 32;
@@ -211,37 +205,12 @@ namespace FileEncryptAES
                     //txtDGsignature.Text = RsaEncryptWithPrivate(txtSHAoutput.Text, "privateKey.pem");
                     progressBarmarquee.Visible = false;
                 }
-                else
-                {
-                    //fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                    //isGotDGSign = false;
-                    //fsCipherText.SetLength( fsCipherText.Length - 384 );
-                }
-
-                try
-                {
-                    cryptStream.Close();
-                    fsInput.Close();
-                    isGotDGSign = false;
-                    fsCipherText.Close();
-                }
-                catch
-                {
-                    if ( isGotDGSign && !isEncrypt )
-                    {
-                        fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                        isGotDGSign = false;
-                    }
-                    fsInput.Close();
-                    fsCipherText.Close();
-                }
+                cryptStream.Close();
+                fsInput.Close();
+                fsCipherText.Close();
             }
             catch
             {
-                if (isGotDGSign && !isEncrypt )
-                {
-                    fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                }
                 fsInput.Close();
                 fsCipherText.Close();
             }
@@ -454,25 +423,18 @@ namespace FileEncryptAES
                 lblStatus.Text = statusCount + "/" + statusLength + ". " + fileOrfolder + " is being encrypt...";
                 statusCount++;
                 AESAlgorithm(inputFileName, outputFileName, password, true);
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
 
                 if (fileOrfolder == "Folder")
                 {
                     DeleteFile(inputFileName);
                 }
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
-                progressContinuous.Value = 0;
-                lblStatus.Text = "Ready!";
                 _FINALMESSAGE = "File save at\n" + outputFileName;
+
+                lblStatus.Text = fileOrfolder + " encrypt successful!";
             }
             catch
             {
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
-                progressContinuous.Value = 0;
-                lblStatus.Text = "Ready!";
+                
             }
         }
 
@@ -572,11 +534,11 @@ namespace FileEncryptAES
                 lblStatus.Text = statusCount + "/" + statusLength + ". " + fileOrfolder + " is being decrypt...";
                 statusCount++;
                 AESAlgorithm(inputFileName, outputFileName, password, false);
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
 
                 if (fileOrfolder == "Folder")
                 {
+                    lblPercentcount.Text = "";
+                    lblPercentcount.Refresh();
                     progressBarmarquee.Visible = true;
                     lblStatus.Text = statusCount + "/" + statusLength + ". " + "Extracting...";
                     statusCount++;
@@ -586,20 +548,13 @@ namespace FileEncryptAES
                     outputFileName = pathToSave;
                 }
 
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
-                progressContinuous.Value = 0;
-                lblStatus.Text = "Ready!";
                 _FINALMESSAGE = fileOrfolder + " save at " + outputFileName;
+                lblStatus.Text = fileOrfolder + " decrypt successful!";
             }
             catch
             {
                 DeleteFile(outputFileName);
                 DeleteFolder(pathToSave);
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
-                progressContinuous.Value = 0;
-                lblStatus.Text = "Ready!";
                 _FINALMESSAGE = "Cannot decrypt, Password incorrect!";
             }
         }
@@ -631,10 +586,7 @@ namespace FileEncryptAES
             }
             catch 
             {
-                pathToSave = "";
-                lblStatus.Text = "Ready!";
-                lblPercentcount.Text = "";
-                lblPercentcount.Refresh();
+                
             }
         }
         private void generateRSAKey(DoWorkEventArgs e)
@@ -670,7 +622,7 @@ namespace FileEncryptAES
             File.WriteAllText(pathToSave + @"\privateKey.pem", print_privatekey);
 
             progressBarmarquee.Visible = false;
-            lblStatus.Text = "Ready!";
+            lblStatus.Text = "Generate successful!";
             _FINALMESSAGE = "Generate RSA key successful!\nFilename: publicKey.pem & privateKey.pem \nAt " + pathToSave;
             pathToSave = "";
         }
@@ -720,6 +672,11 @@ namespace FileEncryptAES
             AfterWorkerStop();
             _FINALMESSAGE = _FINALMESSAGE + "\nTotal time: " + elapsedTime;
             MessageBox.Show(this, _FINALMESSAGE, "NMCrypt Message", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            lblStatus.Text = "Ready!";
+            lblStatus.Refresh();
+            lblPercentcount.Text = "";
+            lblPercentcount.Refresh();
+            progressContinuous.Value = 0;
         }
 
         private void btnVerifyfile_Click(object sender, EventArgs e)
@@ -786,24 +743,58 @@ namespace FileEncryptAES
         {
             string inputFileName = txtInputCheck.Text;
             byte[] DGSignFromFile = new byte[384];
-            bool isGotDGSign = false;
-            FileStream fsInput = new(inputFileName, FileMode.Open, FileAccess.ReadWrite);
+            FileStream fsInput = new(inputFileName, FileMode.Open, FileAccess.Read);
             try
             {
-                progressBarmarquee.Visible = true;
-                lblStatus.Text = statusCount + "/" + statusLength + ". " + "Verifying file integrity";
+                progressBarmarquee.Visible = false;
+                lblStatus.Text = statusCount + "/" + statusLength + ". " + "Verifying file integrity...";
                 statusCount++;
                 fsInput.Seek(-384, SeekOrigin.End);
                 fsInput.Read(DGSignFromFile, 0, DGSignFromFile.Length);
                 string SHAGetFromFile = RsaDecryptWithPublic(Convert.ToBase64String(DGSignFromFile), _PUBLICKEY);
 
-                fsInput.SetLength(fsInput.Length - DGSignFromFile.Length);
-                isGotDGSign = true;
+                //Read from the input file, then calculate hash of the input file.
                 fsInput.Position = 0;
-                string SHAComputeFromFile = HashFile(fsInput);
-                fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                progressBarmarquee.Visible = false;
-                lblStatus.Text = "Ready!";
+                lblPercentcount.Text = "";
+                lblPercentcount.Refresh();
+                int numberBytesRead = 2 * 1024 * 1024; //2MB
+                byte[] bin = new byte[numberBytesRead];
+                long rdlen = 0;
+                long totlen = fsInput.Length;
+                int len = 0;
+                SHA512 sha512 = SHA512.Create();
+                while (rdlen < totlen)
+                {
+                    long position = fsInput.Position;
+                    len = fsInput.Read(bin, 0, numberBytesRead); // Lần lượt đọc 2MB / 1 lần trong file input
+                    rdlen = rdlen + len;
+                    if (rdlen >= totlen)
+                    {
+                        fsInput.Position = position;
+                        len = fsInput.Read(bin, 0, len - 384);
+                    }
+                    sha512.TransformBlock(bin, 0, len, null, 0);
+
+                    int value = (int)((rdlen * 100) / totlen);
+                    if (value != progressContinuous.Maximum)
+                    {
+                        progressContinuous.Value = value + 1;
+                    }
+                    else
+                    {
+                        progressContinuous.Maximum = value + 1;
+                        progressContinuous.Value = value + 1;
+                        progressContinuous.Maximum = value;
+                    }
+                    progressContinuous.Value = value;
+                    progressContinuous.Refresh();
+
+                    lblPercentcount.Text = ((long)(rdlen * 100) / totlen).ToString() + " %";
+                    lblPercentcount.Refresh();
+                }
+                sha512.TransformFinalBlock(new byte[0], 0, 0);
+                string SHAComputeFromFile = BitConverter.ToString(sha512.Hash).Replace("-", "").ToUpper();
+
                 if (SHAGetFromFile == SHAComputeFromFile)
                 {
                     _FINALMESSAGE = "Your file is safe. You can decrypt it!";
@@ -812,15 +803,11 @@ namespace FileEncryptAES
                 {
                     _FINALMESSAGE = "Warning!\nThis file has been change (Not have integrity)!";
                 }
+                lblStatus.Text = "Completed!";
                 fsInput.Close();
             }
             catch
             {
-                if (isGotDGSign)
-                {
-                    fsInput.Write(DGSignFromFile, 0, DGSignFromFile.Length);
-                }
-                lblStatus.Text = "Ready!!";
                 fsInput.Close();
                 _FINALMESSAGE = "Warning!\nThis file has been change (Not have integrity)!";
             }
