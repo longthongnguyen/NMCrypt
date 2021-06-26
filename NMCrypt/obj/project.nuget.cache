@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Mfpog+6ss7m1KrpvWdopdukrcsWtxiT1kpiJ6fZwpSVlMU7fhYJbd/LWdbxkcRcGgjx9YcB0xFjIxSn5EhuC/w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\THONG\\Documents\\HOCTAP\\VisualStudio2019\\NMCrypt\\NMCrypt\\NMCrypt.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\THONG\\.nuget\\packages\\fontawesome.sharp\\5.15.3\\fontawesome.sharp.5.15.3.nupkg.sha512",
+    "C:\\Users\\THONG\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512"
+  ],
+  "logs": []
+}

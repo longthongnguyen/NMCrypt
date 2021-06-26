@@ -1,0 +1,57 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "NMCrypt/1.0.0": {
+        "dependencies": {
+          "FontAwesome.Sharp": "5.15.3",
+          "Portable.BouncyCastle": "1.8.10"
+        },
+        "runtime": {
+          "NMCrypt.dll": {}
+        }
+      },
+      "FontAwesome.Sharp/5.15.3": {
+        "runtime": {
+          "lib/netcoreapp3.1/FontAwesome.Sharp.dll": {
+            "assemblyVersion": "5.15.3.0",
+            "fileVersion": "5.15.3.0"
+          }
+        }
+      },
+      "Portable.BouncyCastle/1.8.10": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "assemblyVersion": "1.8.10.0",
+            "fileVersion": "1.8.10.1"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NMCrypt/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FontAwesome.Sharp/5.15.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-b72giuP5i2aR2W+u1gdYfYnTRkMIvI78idSDgrgcSV0aSE/nwJcMoh3sItxugMqOcNeIHxveGxAxcrcTYmwlHA==",
+      "path": "fontawesome.sharp/5.15.3",
+      "hashPath": "fontawesome.sharp.5.15.3.nupkg.sha512"
+    },
+    "Portable.BouncyCastle/1.8.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XLhjNAwuVB9ynwn11l5K44eyozh8q6gFseTrlnLNttejimglX7+F9+vxh60LPjvA/DAt6fUdS43N3ah8K6eaWg==",
+      "path": "portable.bouncycastle/1.8.10",
+      "hashPath": "portable.bouncycastle.1.8.10.nupkg.sha512"
+    }
+  }
+}
