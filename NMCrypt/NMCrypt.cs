@@ -39,7 +39,7 @@ namespace NMCrypt
             contentsToolStripMenuItem.Enabled = false;
             indexToolStripMenuItem.Enabled = false;
             searchToolStripMenuItem.Enabled = false;
-            aboutToolStripMenuItem.Enabled = false;
+            //aboutToolStripMenuItem.Enabled = false;
             editToolStripMenuItem.Visible = false;
             btnHide.Visible = false;
         }
@@ -103,6 +103,7 @@ namespace NMCrypt
         string _AESMODE = "CBC";
         string _AESKEYSIZE = "256 bits";
         string _FINALMESSAGE = "";
+        bool _ISDELETEFILE = false;
         //string _DROPEDPATH = "";
         int statusCount = 0;
         int statusLength = 1;
@@ -325,7 +326,7 @@ namespace NMCrypt
 
         public void DeleteFolder(string path)
         {
-            Directory.Delete(path);
+            Directory.Delete(path, true);
         }
 
         public void DeleteFile(string path)
@@ -454,8 +455,19 @@ namespace NMCrypt
                 {
                     DeleteFile(inputFileName);
                 }
+                if (_ISDELETEFILE)
+                {
+                    string path = txtInputEncrypt.Text;
+                    try
+                    {
+                        DeleteFolder(path);
+                    }
+                    catch
+                    {
+                        DeleteFile(path);
+                    }
+                }
                 _FINALMESSAGE = "File save at\n" + outputFileName;
-
                 lblStatus.Text = fileOrfolder + " encrypt successful!";
             }
             catch
@@ -469,32 +481,25 @@ namespace NMCrypt
             try
             {
                 backgroundWorker1.Dispose();
-                FileAttributes attr = File.GetAttributes(txtInputDecrypt.Text);
-                if (attr.HasFlag(FileAttributes.Directory))
+                if (!File.Exists(txtInputDecrypt.Text))
                 {
-                    MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    if (Directory.Exists(txtInputDecrypt.Text))
+                    {
+                        MessageBox.Show(this, "Input must be a file.", "NMCrypt Message",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                        return;
+                    }
+                    MessageBox.Show(this, "Invalid input path. Couldn't find your file!", "NMCrypt Message",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                     return;
                 }
                 else
                 {
-                    if (!File.Exists(txtInputDecrypt.Text))
+                    if (Path.GetExtension(txtInputDecrypt.Text) != ".NMCryptF" && Path.GetExtension(txtInputDecrypt.Text) != ".NMCrypt")
                     {
-                        if (!Directory.Exists(txtInputDecrypt.Text))
-                        {
-                            MessageBox.Show(this, "Invalid input path. Couldn't find your file!", "NMCrypt Message",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        if (Path.GetExtension(txtInputDecrypt.Text) != ".NMCryptF" && Path.GetExtension(txtInputDecrypt.Text) != ".NMCrypt")
-                        {
-                            MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                            return;
-                        }
+                        MessageBox.Show(this, "Sorry, this file type is not supported here!", "NMCrypt Message",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                        return;
                     }
                 }
                 workerOptions = "decrypt";
@@ -574,6 +579,18 @@ namespace NMCrypt
                     outputFileName = pathToSave;
                 }
 
+                if (_ISDELETEFILE)
+                {
+                    string path = txtInputDecrypt.Text;
+                    try
+                    {
+                        DeleteFolder(path);
+                    }
+                    catch
+                    {
+                        DeleteFile(path);
+                    }
+                }
                 _FINALMESSAGE = fileOrfolder + " save at " + outputFileName;
                 lblStatus.Text = fileOrfolder + " decrypt successful!";
             }
@@ -690,13 +707,13 @@ namespace NMCrypt
         {
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}h {1:00}m {2:00}s {3:00}ms", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            _FINALMESSAGE = _FINALMESSAGE + "\nTotal time: " + elapsedTime;
 
             progressBarmarquee.Visible = false;
             progressBarmarquee.MarqueeAnimationSpeed = 0;
             progressBarmarquee.Style = ProgressBarStyle.Continuous;
             btnReset.Enabled = true;
             AfterWorkerStop();
-            _FINALMESSAGE = _FINALMESSAGE + "\nTotal time: " + elapsedTime;
             MessageBox.Show(this, _FINALMESSAGE, "NMCrypt Message", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             lblStatus.Text = "Ready!";
             lblStatus.Refresh();
@@ -745,8 +762,6 @@ namespace NMCrypt
                         }
                     }
                 }
-
-
                 
                 statusLength = 1;
                 statusCount = 1;
@@ -837,11 +852,6 @@ namespace NMCrypt
                 fsInput.Close();
                 _FINALMESSAGE = "Warning!\nThis file has been change (Not have integrity)!";
             }
-        }
-
-        private void chbxDisplaypasswordDecrypt_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void importpukeyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -955,6 +965,9 @@ namespace NMCrypt
             _PRIVATEKEY = "";
             _PUBLICKEY = "";
             _FINALMESSAGE = "";
+            _ISDELETEFILE = false;
+            _AESMODE = "CBC";
+            _AESKEYSIZE = "256 bits";
             //string _DROPEDPATH = "";
             statusCount = 0;
             statusLength = 1;
@@ -1022,8 +1035,17 @@ namespace NMCrypt
             formOptions f = new();
             f.tempMode = _AESMODE;
             f.tempKeySize = _AESKEYSIZE;
+            if(_ISDELETEFILE)
+            {
+                f.tempIsDelete = "true";
+            }
+            else
+            {
+                f.tempIsDelete = "false";
+            }
             f._AESMode = new formOptions.GETDATA(getAESMode);
             f._AESKeySize = new formOptions.GETDATA(getAESKeySize);
+            f._isDelete = new formOptions.GETDATA(getisDelete);
             if (this.TopMost == true)
             {
                 chbTopmost.Checked = false;
@@ -1043,6 +1065,32 @@ namespace NMCrypt
         public void getAESKeySize(string value)
         {
             _AESKEYSIZE = value;
+        }
+        public void getisDelete(string value)
+        {
+            if(value == "true")
+            {
+                _ISDELETEFILE = true;
+            }
+            else
+            {
+                _ISDELETEFILE = false;
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            formAbout f = new();
+            if (this.TopMost == true)
+            {
+                chbTopmost.Checked = false;
+                f.ShowDialog();
+                chbTopmost.Checked = true;
+            }
+            else
+            {
+                f.ShowDialog();
+            }
         }
     }
 }

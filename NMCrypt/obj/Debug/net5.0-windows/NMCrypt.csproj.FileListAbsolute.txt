@@ -43,3 +43,4 @@ C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\NMCrypt\NMCrypt\obj\Debug\net5.
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\NMCrypt\NMCrypt\obj\Debug\net5.0-windows\NMCrypt.genruntimeconfig.cache
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\NMCrypt\NMCrypt\obj\Debug\net5.0-windows\NMCrypt.formNMCrypt.resources
 C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\NMCrypt\NMCrypt\obj\Debug\net5.0-windows\NMCrypt.formOptions.resources
+C:\Users\THONG\Documents\HOCTAP\VisualStudio2019\NMCrypt\NMCrypt\obj\Debug\net5.0-windows\NMCrypt.formAbout.resources
