@@ -1,5 +1,6 @@
 # NMCrypt
 File and Folder Encrypt / Decrypt / Integrity Check
+
 .NET 5.0 required
 
 ## Usage
