@@ -27,6 +27,13 @@ Now you can drag and drop the File to the Unlock button to Decrypt or you can do
 * Step 2: Enter input path.
 * Step 3: Click Unlock button to start Decrypt.
 
+### 5. Change settings (Additional)
+Tools -> Options
+
+Allow Deleting File/Folder after Encrypt/Decrypt. Default: Not delete.
+
+Allow Changing AES Mode / Key Size. Default: CBC Mode, 256 bits Key.
+
 # Implementation
 * AES algorithm by Rijndael Class: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.rijndael
 * Hash Algorithm SHA512 by SHA512 Class: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha512
