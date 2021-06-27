@@ -17,19 +17,21 @@ Now you can drag and drop the File/Folder to the Lock button to Encrypt or you c
 ### 3. Verify integrity
 * Step 1: Import public key (.pem). Click Import Public Key.
 
-Now you can drag and drop the File to the Check button to check integrity or you can do Step 2 and Step 3.
+Now you can drag and drop the File to the Check button to Check integrity or you can do Step 2 and Step 3.
 * Step 2: Enter input path.
 * Step 3: Click Check button to start check integrity.
 ### 4. Decrypt File/Folder
 * Step 1: Enter the password to decrypt File/Folder (Optional).
 
-Now you can drag and drop the File/Folder to the Unlock button to Decrypt or you can do Step 2 and Step 3.
+Now you can drag and drop the File to the Unlock button to Decrypt or you can do Step 2 and Step 3.
 * Step 2: Enter input path.
 * Step 3: Click Unlock button to start Decrypt.
+
 # Implementation
 * AES algorithm by Rijndael Class: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.rijndael
 * Hash Algorithm SHA512 by SHA512 Class: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha512
 * RSA algorithm by Legion of the Bouncy Castle: https://www.bouncycastle.org/csharp/
+
 # Single File Application
 You can use the application as a single file.
 
