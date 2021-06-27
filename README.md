@@ -3,7 +3,7 @@
 * .NET 5.0 required
 
 # Usage
-## 1. Generate Key pair (RSA private and public key)
+### 1. Generate Key pair (RSA private and public key)
 Generate your own RSA key:
 
 Tools -> Generate RSA Key (.pem)
